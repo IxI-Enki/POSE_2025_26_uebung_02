@@ -1,0 +1,8 @@
+name: Mein erster Workflow
+on: push  # Wird ausgeführt bei jedem Push
+jobs:
+  greet:
+    runs-on: ubuntu-latest  # Auf welchem System läuft es
+    steps:
+      - name: IxI-Benachrichtigen
+        run: echo "Wir haben einen Push erhalten."
