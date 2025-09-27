@@ -1,5 +1,5 @@
 ---
-title: 'POSE SEeToDoList'
+title: 'POSE Exercise 02: SEeToDoList'
 exercise_name: 'SEeToDoList'
 exercise_number: 2
 author: 'IxI-Enki'
@@ -10,7 +10,7 @@ moodle_link: 'https://edufs.edu.htl-leonding.ac.at/moodle/mod/assign/view.php?id
 due_date: '2025-09-30 00:00'
 ---
 
-A repository for the SEeToDoList assignment. This repo contains the standardized structure, the extracted Moodle brief, and space for documentation and deliverables.
+This repository contains the Moodle assignment for SEeToDoList (assignment code: 2526_78ABIF_78ACIF_POS_GEHR), standardized for documentation and submission.
 
 ## 1. Goals
 
@@ -20,9 +20,9 @@ A repository for the SEeToDoList assignment. This repo contains the standardized
 
 ## 2. Assignment Overview
 
-A more detailed overview of the assignment can be found here:
+The exact exercise content (as fetched from Moodle) is available here:
 
-- [Moodle Assignment Details](angabe/moodle_angabe.md)
+- [Moodle Assignment (exact content)](angabe/moodle_angabe.md)
 
 ## 3. Submission Guidelines
 
@@ -40,7 +40,7 @@ A more detailed overview of the assignment can be found here:
 
 ## 5. Repository Structure
 
-- `angabe/`: Contains the original assignment description and materials.
+- `angabe/`: Contains the original assignment description (exact Moodle content).
 
 - `docs/`: Holds diagrams, explanations, other documentation and external sources like PDFs.
 
@@ -50,8 +50,8 @@ A more detailed overview of the assignment can be found here:
 
 <!--
 Last Change
-  - Description   : Initialize repository documentation and structure
-  - Date          : 2025-09-27 11:41 
+  - Description   : Cleaned assignment content, consolidated angabe, and updated README
+  - Date          : 2025-09-27 11:50 
   - Origin        : IxI-Enki/School-Repository-Agent
-  - File Version  : 1.0.0
+  - File Version  : 1.1.0
 -->
