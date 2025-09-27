@@ -2,39 +2,131 @@
 <div class="container mt-4">
   <h3 class="mb-4">{{ 'DASHBOARD.CARDS.TDLIST_TITLE' | translate }}</h3>
 
-  <div class="d-flex mb-3">
-    <button *ngIf="canAdd" class="btn btn-primary me-2" (click)="addCommand()">
+  <div class="d-flex gap-2 mb-3 align-items-center">
+    <button *ngIf="canAdd" class="btn btn-primary" (click)="addCommand()">
       <i class="bi bi-plus"></i>
     </button>
-    <input *ngIf="canSearch" type="text" class="form-control me-2" [(ngModel)]="searchTerm" [placeholder]="'COMMON.SEARCH_PLACEHOLDER' | translate" />
-    <button *ngIf="canRefresh" class="btn btn-success me-2" (click)="reloadData()">
+    <input *ngIf="canSearch" type="text" class="form-control" [(ngModel)]="searchTerm" [placeholder]="'COMMON.SEARCH_PLACEHOLDER' | translate" />
+    <button *ngIf="canRefresh" class="btn btn-success" (click)="reloadData()">
       <i class="bi bi-arrow-clockwise"></i>
     </button>
   </div>
 
-  <table class="table table-striped table-bordered table-hover">
+  <!-- Sorting options -->
+  <div class="d-flex gap-2 mb-3 flex-wrap">
+    <label class="me-2 text-secondary small">Sortierung:</label>
+    <div class="btn-group" role="group" aria-label="Sort options">
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='nameAsc'" (click)="sortOption='nameAsc'; dataItems = sortData(dataItems)">A→Z</button>
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='nameDesc'" (click)="sortOption='nameDesc'; dataItems = sortData(dataItems)">Z→A</button>
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='createdDesc'" (click)="sortOption='createdDesc'; dataItems = sortData(dataItems)"><i class="bi bi-clock-history me-1"></i>Neueste</button>
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='createdAsc'" (click)="sortOption='createdAsc'; dataItems = sortData(dataItems)"><i class="bi bi-clock me-1"></i>Älteste</button>
+    </div>
+  </div>
+
+  <table class="table table-striped table-bordered table-hover align-middle">
     <thead class="table-dark">
       <tr>
+        <th style="width:1%"></th>
         <th>{{ 'TDLIST.NAME' | translate }}</th>
         <th>{{ 'TDLIST.DESCRIPTION' | translate }}</th>
+        <th style="width:1%">Tasks</th>
         <th *ngIf="canEdit || canDelete" style="white-space: nowrap; width: 1%;">{{ 'COMMON.ACTIONS' | translate }}</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of dataItems">
-        <td><strong>{{ item.name }}</strong></td>
-        <td>{{ item.description }}</td>
-        <td *ngIf="canEdit || canDelete">
-          <div class="d-flex gap-1">
-            <button *ngIf="canEdit" class="btn btn-sm btn-outline-secondary me-2" (click)="editCommand(item)">
-              <i class="bi bi-pencil"></i>
+      <ng-container *ngFor="let item of dataItems">
+        <tr>
+          <td>
+            <button class="btn btn-sm btn-outline-secondary" (click)="toggleTasks(item)" [attr.aria-expanded]="expanded[item.id]">
+              <i class="bi" [ngClass]="expanded[item.id] ? 'bi-caret-down-square' : 'bi-caret-right-square'"></i>
             </button>
-            <button *ngIf="canDelete" class="btn btn-sm btn-outline-danger" (click)="deleteCommand(item)">
-              <i class="bi bi-trash"></i>
-            </button>
-          </div>
-        </td>
-      </tr>
+          </td>
+          <td class="fw-semibold">{{ item.name }}</td>
+          <td>{{ item.description }}</td>
+          <td>
+            <span *ngIf="getTaskCount(item) !== undefined" class="badge text-bg-secondary">{{ getTaskCount(item) }}</span>
+            <span *ngIf="getTaskCount(item) === undefined" class="text-muted small">—</span>
+          </td>
+          <td *ngIf="canEdit || canDelete">
+            <div class="d-flex gap-1">
+              <button *ngIf="canEdit" class="btn btn-sm btn-outline-secondary me-2" (click)="editCommand(item)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button *ngIf="canDelete" class="btn btn-sm btn-outline-danger" (click)="deleteCommand(item)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="expanded[item.id]" class="details-row">
+          <td></td>
+          <td colspan="4">
+            <div class="ps-2">
+              <div class="d-flex align-items-center mb-2">
+                <h6 class="mb-0 me-3"><i class="bi bi-card-checklist me-2"></i>{{ 'DASHBOARD.CARDS.TDTASK_TITLE' | translate }}</h6>
+                <div *ngIf="loadingTasks[item.id]" class="spinner-border spinner-border-sm text-secondary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <div class="ms-auto">
+                  <button class="btn btn-sm btn-primary" (click)="beginAddTask(item)"><i class="bi bi-plus-lg"></i> {{ 'COMMON.ADD' | translate }}</button>
+                </div>
+              </div>
+
+              <!-- New Task Inline Form -->
+              <div *ngIf="newTaskByListId[item.id]" class="card card-body mb-2 p-2">
+                <div class="row g-2 align-items-center">
+                  <div class="col-md-3"><input class="form-control" [(ngModel)]="newTaskByListId[item.id]!.title" placeholder="{{ 'TDTASK.TITLE' | translate }}" /></div>
+                  <div class="col-md-4"><input class="form-control" [(ngModel)]="newTaskByListId[item.id]!.description" placeholder="{{ 'TDTASK.DESCRIPTION' | translate }}" /></div>
+                  <div class="col-md-3"><input type="datetime-local" class="form-control" [(ngModel)]="newTaskByListId[item.id]!.dueDate" /></div>
+                  <div class="col-md-2 d-flex gap-2 justify-content-end">
+                    <button class="btn btn-success btn-sm" [disabled]="savingByListId[item.id]" (click)="saveNewTask(item)"><i class="bi bi-check-lg"></i></button>
+                    <button class="btn btn-outline-secondary btn-sm" (click)="cancelNewTask(item)"><i class="bi bi-x-lg"></i></button>
+                  </div>
+                </div>
+              </div>
+
+              <table class="table table-sm table-striped mb-0">
+                <thead>
+                  <tr>
+                    <th>{{ 'TDTASK.TITLE' | translate }}</th>
+                    <th>{{ 'TDTASK.DESCRIPTION' | translate }}</th>
+                    <th>{{ 'TDTASK.DUE' | translate }}</th>
+                    <th>{{ 'TDTASK.PRIORITY' | translate }}</th>
+                    <th style="width:1%"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let t of (tasksByListId[item.id] || [])">
+                    <ng-container *ngIf="!editingTaskCopyById[t.id]; else editRow">
+                      <td [class.text-decoration-line-through]="t.isCompleted">{{ t.title }}</td>
+                      <td class="text-muted">{{ t.description }}</td>
+                      <td>{{ t.dueDate | date:'short' }}</td>
+                      <td>{{ t.priority }}</td>
+                      <td class="text-nowrap">
+                        <button class="btn btn-sm btn-outline-secondary me-1" (click)="beginEditTask(t)"><i class="bi bi-pencil"></i></button>
+                        <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(item, t)"><i class="bi bi-trash"></i></button>
+                      </td>
+                    </ng-container>
+                    <ng-template #editRow>
+                      <td><input class="form-control form-control-sm" [(ngModel)]="editingTaskCopyById[t.id]!.title" /></td>
+                      <td><input class="form-control form-control-sm" [(ngModel)]="editingTaskCopyById[t.id]!.description" /></td>
+                      <td><input type="datetime-local" class="form-control form-control-sm" [(ngModel)]="editingTaskCopyById[t.id]!.dueDate" /></td>
+                      <td><input type="number" class="form-control form-control-sm" [(ngModel)]="editingTaskCopyById[t.id]!.priority" /></td>
+                      <td class="text-nowrap">
+                        <button class="btn btn-sm btn-success me-1" [disabled]="savingByListId[item.id]" (click)="saveEditTask(item, t)"><i class="bi bi-check-lg"></i></button>
+                        <button class="btn btn-sm btn-outline-secondary" (click)="cancelEditTask(t)"><i class="bi bi-x-lg"></i></button>
+                      </td>
+                    </ng-template>
+                  </tr>
+                  <tr *ngIf="(tasksByListId[item.id] || []).length === 0 && !loadingTasks[item.id] && !newTaskByListId[item.id]">
+                    <td colspan="5" class="text-muted">{{ 'COMMON.NO_DATA' | translate }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>

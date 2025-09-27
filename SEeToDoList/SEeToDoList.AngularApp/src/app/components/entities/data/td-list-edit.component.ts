@@ -8,7 +8,6 @@ import { TdListBaseEditComponent }from '@app/components/entities/data/td-list-ba
 //@CustomImportEnd
 @Component({
   selector:'app-td-list-edit',
-  standalone: true,
   imports: [ CommonModule, FormsModule, TranslateModule],
   templateUrl: './td-list-edit.component.html',
   styleUrl: './td-list-edit.component.css'

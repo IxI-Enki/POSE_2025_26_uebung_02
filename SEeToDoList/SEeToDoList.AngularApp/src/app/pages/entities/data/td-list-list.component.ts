@@ -6,9 +6,11 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ITdList } from '@app-models/entities/data/i-td-list';
+import { ITdTask } from '@app-models/entities/data/i-td-task';
 import { TdListBaseListComponent }from '@app/components/entities/data/td-list-base-list.component';
 import { TdListEditComponent }from '@app/components/entities/data/td-list-edit.component';
 import { TdListService } from '@app-services/http/entities/data/td-list-service';
+import { TdTaskService } from '@app-services/http/entities/data/td-task-service';
 //@CustomImportBegin
 //@CustomImportEnd
 @Component({
@@ -19,7 +21,18 @@ import { TdListService } from '@app-services/http/entities/data/td-list-service'
   styleUrl: './td-list-list.component.css'
 })
 export class TdListListComponent extends TdListBaseListComponent {
-  constructor(protected override dataAccessService: TdListService)
+  // cache of expanded states and tasks
+  public expanded: Record<number, boolean> = {};
+  public tasksByListId: Record<number, ITdTask[]> = {};
+  public loadingTasks: Record<number, boolean> = {};
+  public newTaskByListId: Record<number, ITdTask | undefined> = {};
+  public editingTaskCopyById: Record<number, ITdTask | undefined> = {};
+  public savingByListId: Record<number, boolean> = {};
+
+  // sorting
+  public sortOption: 'nameAsc' | 'nameDesc' | 'createdDesc' | 'createdAsc' = 'nameAsc';
+
+  constructor(protected override dataAccessService: TdListService, private taskService: TdTaskService)
   {
     super(dataAccessService);
   }
@@ -36,6 +49,110 @@ export class TdListListComponent extends TdListBaseListComponent {
   override getEditComponent() {
     return TdListEditComponent;
   }
+  protected override sortData(items: ITdList[]): ITdList[] {
+    const sorted = [...items];
+    switch (this.sortOption) {
+      case 'nameAsc':
+        sorted.sort((a,b) => (a.name||'').localeCompare(b.name||''));
+        break;
+      case 'nameDesc':
+        sorted.sort((a,b) => (b.name||'').localeCompare(a.name||''));
+        break;
+      case 'createdDesc':
+        sorted.sort((a,b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
+        break;
+      case 'createdAsc':
+        sorted.sort((a,b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime());
+        break;
+    }
+    return sorted;
+  }
 //@CustomCodeBegin
+  public toggleTasks(list: ITdList) {
+    const id = list.id as number;
+    this.expanded[id] = !this.expanded[id];
+    if (this.expanded[id] && !this.tasksByListId[id] && !this.loadingTasks[id]) {
+      this.loadingTasks[id] = true;
+      this.taskService.query({ filter: 'tdListId.Equals(@0)', values: [String(id)] })
+        .subscribe(items => {
+          this.tasksByListId[id] = items;
+          this.loadingTasks[id] = false;
+        });
+    }
+  }
+
+  public beginAddTask(list: ITdList) {
+    const id = list.id as number;
+    this.newTaskByListId[id] = {
+      id: 0 as any,
+      title: '',
+      description: '',
+      dueDate: null,
+      completedOn: null,
+      isCompleted: false,
+      priority: 2,
+      tdListId: id,
+      tdList: null
+    } as ITdTask;
+  }
+
+  public async saveNewTask(list: ITdList) {
+    const id = list.id as number;
+    const newTask = this.newTaskByListId[id];
+    if (!newTask) return;
+    this.savingByListId[id] = true;
+    this.taskService.create(newTask)
+      .subscribe(created => {
+        this.tasksByListId[id] = [...(this.tasksByListId[id] || []), created];
+        this.newTaskByListId[id] = undefined;
+        this.savingByListId[id] = false;
+      });
+  }
+
+  public cancelNewTask(list: ITdList) {
+    const id = list.id as number;
+    this.newTaskByListId[id] = undefined;
+  }
+
+  public beginEditTask(task: ITdTask) {
+    this.editingTaskCopyById[task.id as number] = { ...task } as ITdTask;
+  }
+
+  public saveEditTask(list: ITdList, task: ITdTask) {
+    const id = list.id as number;
+    const copy = this.editingTaskCopyById[task.id as number];
+    if (!copy) return;
+    this.savingByListId[id] = true;
+    this.taskService.update(copy)
+      .subscribe(updated => {
+        const arr = this.tasksByListId[id] || [];
+        const idx = arr.findIndex(t => t.id === updated.id);
+        if (idx >= 0) arr[idx] = updated;
+        this.tasksByListId[id] = [...arr];
+        this.editingTaskCopyById[task.id as number] = undefined;
+        this.savingByListId[id] = false;
+      });
+  }
+
+  public cancelEditTask(task: ITdTask) {
+    this.editingTaskCopyById[task.id as number] = undefined;
+  }
+
+  public deleteTask(list: ITdList, task: ITdTask) {
+    const id = list.id as number;
+    this.savingByListId[id] = true;
+    this.taskService.deleteById(task.id as number)
+      .subscribe(() => {
+        const arr = (this.tasksByListId[id] || []).filter(t => t.id !== task.id);
+        this.tasksByListId[id] = arr;
+        this.savingByListId[id] = false;
+      });
+  }
+
+  public getTaskCount(list: ITdList): number | undefined {
+    const id = list.id as number;
+    if (this.tasksByListId[id]) return this.tasksByListId[id].length;
+    return undefined;
+  }
 //@CustomCodeEnd
 }

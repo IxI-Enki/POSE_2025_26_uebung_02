@@ -29,7 +29,8 @@
     "OK": "OK",
     "DELETE_CONFIRM": "Möchten Sie den Eintrag '{{item}}' löschen?",
     "DELETE_TITLE": "Löschen bestätigen",
-    "ACTIONS": "Aktionen"
+    "ACTIONS": "Aktionen",
+    "NO_DATA": "Keine Daten vorhanden"
   },
   "DASHBOARD": {
     "TITLE": "Dashboard",

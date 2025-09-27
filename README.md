@@ -1,7 +1,7 @@
 ---
 title: 'POSE Exercise 02: SEeToDoList'
 exercise_name: 'SEeToDoList'
-exercise_number: 2
+nr: 2
 author: 'IxI-Enki'
 created: '2025-09-27 11:41'
 course: 'Programming and Software Engineering'

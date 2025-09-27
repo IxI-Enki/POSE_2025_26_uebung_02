@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json.Serialization;
-using System;
 
 namespace SEeToDoList.WebApi
 {
@@ -31,21 +30,11 @@ namespace SEeToDoList.WebApi
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy
-                        .SetIsOriginAllowed(origin =>
-                        {
-                            try
-                            {
-                                var host = new Uri(origin).Host;
-                                return host == "localhost" || host == "127.0.0.1";
-                            }
-                            catch
-                            {
-                                return false;
-                            }
-                        })
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
+                    policy.WithOrigins("http://127.0.0.1:54095")
+                          .WithOrigins("http://localhost:54091")
+                          .WithOrigins("http://127.0.0.1:54091")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
                 });
             });
             // Added GeGe

@@ -1,56 +1,56 @@
-﻿<div class="container mt-5">
-  <h1>{{ 'DASHBOARD.WELCOME' | translate }}</h1>
+﻿<div class="container py-5">
+  <div class="mb-4 text-center">
+    <h1 class="display-5 fw-bold mb-2">{{ 'DASHBOARD.WELCOME' | translate }}</h1>
+    <p class="text-secondary">SEeToDoList</p>
+  </div>
 
-  <div class="container-fluid mt-4">
+  <div class="container-fluid">
 
-    <!-- Oeffentliche Karten -->
+    <!-- Öffentlicher Bereich -->
     <ng-container *ngIf="publicCards.length > 0">
-      <h2>{{ 'DASHBOARD.PUBLIC_ACCESS' | translate }}</h2>
-      <div class="row">
-        <div class="col-md-3 mb-4" *ngFor="let card of publicCards">
+      <h2 class="h4 text-uppercase text-secondary mb-3">{{ 'DASHBOARD.PUBLIC_ACCESS' | translate }}</h2>
+      <div class="row g-3">
+        <div class="col-12 col-sm-6 col-lg-3" *ngFor="let card of publicCards">
           <a [routerLink]="[card.type]" class="text-decoration-none">
-            <div class="card shadow-sm h-100" [ngClass]="card.bg">
-              <div class="card-body text-center">
-                <i class="{{card.icon}} fs-1 mb-3" style="display: block;"></i>
-                <h5 class="card-title">{{ card.title | translate }}</h5>
-                <p class="card-text">{{ card.text | translate }}</p>
+            <div class="card dash-card h-100">
+              <div class="card-body text-center py-4">
+                <i class="{{card.icon}} fs-1 mb-3 d-block"></i>
+                <h5 class="card-title mb-1">{{ card.title | translate }}</h5>
+                <small class="text-secondary">{{ card.text | translate }}</small>
               </div>
             </div>
           </a>
         </div>
       </div>
-      <hr />
+      <hr class="my-4" />
     </ng-container>
 
-    <!-- Geschuetzte Karten -->
+    <!-- Geschützter Bereich -->
     <ng-container *ngIf="authCards.length > 0">
-      <h2>{{ 'DASHBOARD.PROTECTED_AREA' | translate }}</h2>
-
-      <div style="margin: 20px;" *ngIf="isLoginReqired">
-        <div class="text-end">
-          <div *ngIf="isLoggedIn">
-            <button class="btn btn-danger mt-2 d-inline-flex align-items-center" (click)="logout()">
-              <i class="bi bi-arrow-left-square" style="margin-right: 10px;"></i>
-              {{ 'AUTH.LOGOUT' | translate }}
+      <div class="d-flex align-items-center mb-3">
+        <h2 class="h4 text-uppercase text-secondary mb-0">{{ 'DASHBOARD.PROTECTED_AREA' | translate }}</h2>
+        <div class="ms-auto" *ngIf="isLoginReqired">
+          <ng-container *ngIf="isLoggedIn; else loginBtn">
+            <button class="btn btn-outline-danger d-inline-flex align-items-center" (click)="logout()">
+              <i class="bi bi-box-arrow-right me-2"></i>{{ 'AUTH.LOGOUT' | translate }}
             </button>
-          </div>
-          <div *ngIf="!isLoggedIn">
-            <a class="btn btn-primary mt-2 d-inline-flex align-items-center" [routerLink]="['/auth/login']">
-              {{ 'AUTH.LOGIN' | translate }}
-              <i class="bi bi-arrow-right-square" style="margin-left: 10px;"></i>
+          </ng-container>
+          <ng-template #loginBtn>
+            <a class="btn btn-primary d-inline-flex align-items-center" [routerLink]="['/auth/login']">
+              <i class="bi bi-shield-lock me-2"></i>{{ 'AUTH.LOGIN' | translate }}
             </a>
-          </div>
+          </ng-template>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-3 mb-4" *ngFor="let card of authCards">
+      <div class="row g-3">
+        <div class="col-12 col-sm-6 col-lg-3" *ngFor="let card of authCards">
           <a [routerLink]="[card.type]" class="text-decoration-none">
-            <div class="card shadow-sm h-100" [ngClass]="card.bg">
-              <div class="card-body text-center">
-                <i class="{{card.icon}} fs-1 mb-3" style="display: block;"></i>
-                <h5 class="card-title">{{ card.title | translate }}</h5>
-                <p class="card-text">{{ card.text | translate }}</p>
+            <div class="card dash-card h-100">
+              <div class="card-body text-center py-4">
+                <i class="{{card.icon}} fs-1 mb-3 d-block"></i>
+                <h5 class="card-title mb-1">{{ card.title | translate }}</h5>
+                <small class="text-secondary">{{ card.text | translate }}</small>
               </div>
             </div>
           </a>

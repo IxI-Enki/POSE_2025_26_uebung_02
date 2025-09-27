@@ -1,1 +1,7 @@
 ﻿/*@CustomCode*/
+.details-row {
+  background: transparent;
+}
+.details-row .table {
+  margin-bottom: 0;
+}

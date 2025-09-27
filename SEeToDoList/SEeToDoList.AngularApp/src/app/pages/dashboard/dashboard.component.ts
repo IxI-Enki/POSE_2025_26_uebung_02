@@ -27,11 +27,11 @@ export class DashboardComponent {
 
   public publicCards: DashboardCard[] = [
     { title: 'DASHBOARD.CARDS.DASHBOARD_TITLE', text: 'DASHBOARD.CARDS.DASHBOARD_TEXT', type: '/dashboard', bg: 'bg-primary text-white', icon: 'bi-speedometer2' },
-    { title: 'DASHBOARD.CARDS.TDLIST_TITLE', text: 'DASHBOARD.CARDS.TDLIST_TEXT', type: '/entities/tdlists', bg: 'bg-success text-white', icon: 'bi-list-task' },
-    { title: 'DASHBOARD.CARDS.TDTASK_TITLE', text: 'DASHBOARD.CARDS.TDTASK_TEXT', type: '/entities/tdtasks', bg: 'bg-info text-white', icon: 'bi-check2-square' },
   ];
 
   public authCards: DashboardCard[] = [
+    { title: 'DASHBOARD.CARDS.TDLIST_TITLE', text: 'DASHBOARD.CARDS.TDLIST_TEXT', type: '/entities/tdlists', bg: 'bg-success text-white', icon: 'bi-list-task' },
+    { title: 'DASHBOARD.CARDS.TDTASK_TITLE', text: 'DASHBOARD.CARDS.TDTASK_TEXT', type: '/entities/tdtasks', bg: 'bg-info text-white', icon: 'bi-check2-square' },
   ];
 
   constructor(

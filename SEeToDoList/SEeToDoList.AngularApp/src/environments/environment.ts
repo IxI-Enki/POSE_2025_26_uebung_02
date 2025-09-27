@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   pwaEnabled: false,
-  loginRequired: false,
-  API_BASE_URL: 'http://localhost:5096/api',
+  loginRequired: true,
+  API_BASE_URL: 'https://localhost:7074/api',
   LOCALE: 'de-DE',
 };
 

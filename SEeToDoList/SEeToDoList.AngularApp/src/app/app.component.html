@@ -33,6 +33,13 @@
 
       <!-- Right-aligned items -->
       <ul class="navbar-nav ms-auto">
+        <!-- Theme toggle -->
+        <li class="nav-item me-2">
+          <button class="btn btn-outline-secondary" type="button" (click)="toggleTheme()" [title]="theme === 'dark' ? 'Light mode' : 'Dark mode'">
+            <i class="bi" [ngClass]="theme === 'dark' ? 'bi-moon-stars' : 'bi-sun'" class="me-1"></i>
+            {{ theme === 'dark' ? 'Dark' : 'Light' }}
+          </button>
+        </li>
 
         <!-- Sprachauswahl - Desktop Dropdown -->
         <li ngbDropdown class="nav-item dropdown d-none d-lg-block">
