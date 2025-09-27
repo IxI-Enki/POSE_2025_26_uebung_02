@@ -1,5 +1,4 @@
 name: Markdown Umlaut Korrektur
-
 on:
   push:
     branches: [main, develop]
@@ -7,7 +6,6 @@ on:
   pull_request:
     branches: [main]
     paths: ['**.md']
-
 jobs:
   check-and-fix-umlauts:
     runs-on: ubuntu-latest
