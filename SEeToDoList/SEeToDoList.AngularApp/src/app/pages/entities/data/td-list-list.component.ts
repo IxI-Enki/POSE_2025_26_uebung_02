@@ -11,12 +11,13 @@ import { TdListBaseListComponent }from '@app/components/entities/data/td-list-ba
 import { TdListEditComponent }from '@app/components/entities/data/td-list-edit.component';
 import { TdListService } from '@app-services/http/entities/data/td-list-service';
 import { TdTaskService } from '@app-services/http/entities/data/td-task-service';
+import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 //@CustomImportBegin
 //@CustomImportEnd
 @Component({
   selector:'app-td-list-list',
   standalone: true,
-  imports: [ CommonModule, FormsModule, TranslateModule ],
+  imports: [ CommonModule, FormsModule, TranslateModule, DragDropModule ],
   templateUrl: './td-list-list.component.html',
   styleUrl: './td-list-list.component.css'
 })
@@ -68,6 +69,16 @@ export class TdListListComponent extends TdListBaseListComponent {
     return sorted;
   }
 //@CustomCodeBegin
+  public dropList(event: CdkDragDrop<ITdList[]>) {
+    moveItemInArray(this.dataItems, event.previousIndex, event.currentIndex);
+  }
+  public dropTask(list: ITdList, event: CdkDragDrop<ITdTask[]>) {
+    const id = list.id as number;
+    const arr = this.tasksByListId[id] || [];
+    moveItemInArray(arr, event.previousIndex, event.currentIndex);
+    this.tasksByListId[id] = [...arr];
+  }
+
   public toggleTasks(list: ITdList) {
     const id = list.id as number;
     this.expanded[id] = !this.expanded[id];

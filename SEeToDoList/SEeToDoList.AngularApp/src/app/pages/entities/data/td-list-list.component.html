@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <table class="table table-striped table-bordered table-hover align-middle">
+  <table class="table table-striped table-bordered table-hover align-middle" cdkDropList (cdkDropListDropped)="dropList($event)">
     <thead class="table-dark">
       <tr>
         <th style="width:1%"></th>
@@ -34,7 +34,7 @@
       </tr>
     </thead>
     <tbody>
-      <ng-container *ngFor="let item of dataItems">
+      <ng-container *ngFor="let item of dataItems; let i = index" cdkDrag>
         <tr>
           <td>
             <button class="btn btn-sm btn-outline-secondary" (click)="toggleTasks(item)" [attr.aria-expanded]="expanded[item.id]">
@@ -85,7 +85,7 @@
                 </div>
               </div>
 
-              <table class="table table-sm table-striped mb-0">
+              <table class="table table-sm table-striped mb-0" cdkDropList (cdkDropListDropped)="dropTask(item, $event)">
                 <thead>
                   <tr>
                     <th>{{ 'TDTASK.TITLE' | translate }}</th>
@@ -96,7 +96,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let t of (tasksByListId[item.id] || [])">
+                  <tr *ngFor="let t of (tasksByListId[item.id] || []); let ti = index" cdkDrag>
                     <ng-container *ngIf="!editingTaskCopyById[t.id]; else editRow">
                       <td [class.text-decoration-line-through]="t.isCompleted">{{ t.title }}</td>
                       <td class="text-muted">{{ t.description }}</td>
