@@ -21,14 +21,42 @@ flowchart LR
     direction LR
     CReq["Compose Request<br>(Invoke-WebRequest)"]:::node
     CRes["Render Response<br>(HTTP Status / JSON)"]:::node
-  end
+    %% pretty JSON bodies as nested subgraphs under client nodes
+    subgraph CReqBody[Request Body (JSON)]
+      direction TB
+      CReqJson["{<br>  \"title\": \"Plan trip\",<br>  \"description\": \"Book flights\",<br>  \"dueDate\": \"<now>\",<br>  \"isCompleted\": false,<br>  \"priority\": 2,<br>  \"tdListId\": 1<br>}"]:::node
+    end
+    subgraph CResBody[Response Body (JSON)]
+      direction TB
+      CResJson["{<br>  \"title\": \"Plan trip\",<br>  \"description\": \"Book flights\",<br>  \"dueDate\": \"2025-09-27T17:39:48.0157651Z\",<br>  \"completedOn\": null,<br>  \"isCompleted\": false,<br>  \"priority\": 2,<br>  \"tdListId\": 1,<br>  \"tdList\": null,<br>  \"id\": 4<br>}"]:::node
+    end
+  end 
 
-  subgraph API[Backend]
+  subgraph API[ ]
     direction LR
-    Ctrl["WebAPI<br>(api/TdLists, api/TdTasks)"]:::node
+    api_ctrl["WebAPI<br>(api/TdLists, api/TdTasks)"]:::node
     Logic["Logic Layer<br>(Validation, EF Core)"]:::node
     DB[("Database<br>(SQLite/EF Core)")]:::node
+  
+    subgraph req[Request]
+      direction LR
+      class req getNode
+      G[GET]:::getNode
+      P[POST]:::postNode
+      U[PUT]:::putNode
+      H[PATCH]:::patchNode
+      D[DELETE]:::delNode
+    end
+    subgraph res[Response]
+      direction LR
+      class res ok200
+      R200[200 OK]:::ok200
+      R201[201 Created]:::created201
+      R4xx[4xx Error]:::err4xx
+      R204[204 No Content]:::no204
+    end
   end
+
 
   %% request flows (one per method)
   G[GET]:::getNode
@@ -37,13 +65,13 @@ flowchart LR
   H[PATCH]:::patchNode
   D[DELETE]:::delNode
 
-  CReq --> G --> Ctrl
-  CReq --> P --> Ctrl
-  CReq --> U --> Ctrl
-  CReq --> H --> Ctrl
-  CReq --> D --> Ctrl
+  CReq --> G --> api_ctrl
+  CReq --> P --> api_ctrl
+  CReq --> U --> api_ctrl
+  CReq --> H --> api_ctrl
+  CReq --> D --> api_ctrl
 
-  Ctrl -- Calls --> Logic:::edge
+  api_ctrl -- Calls --> Logic:::edge
   Logic -- Persist/Query --> DB:::edge
 
   %% response flows (one per status type)
@@ -52,10 +80,10 @@ flowchart LR
   R4xx[4xx Error]:::err4xx
   R204[204 No Content]:::no204
 
-  Ctrl --> R200 --> CRes
-  Ctrl --> R201 --> CRes
-  Ctrl --> R4xx --> CRes
-  Ctrl --> R204 --> CRes
+  api_ctrl --> R200 --> CRes
+  api_ctrl --> R201 --> CRes
+  api_ctrl --> R4xx --> CRes
+  api_ctrl --> R204 --> CRes
 
   class CLIENT,API dark;
 ```
