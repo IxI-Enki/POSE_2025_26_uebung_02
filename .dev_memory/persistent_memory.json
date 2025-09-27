@@ -1,0 +1,35 @@
+{
+  "type": "school_repo_management_memory",
+  "version": 1.1,
+  "createdAt": "2025-09-27T11:41:00Z",
+  "local": {
+    "rootPath": "D:/_Repositories/year_2025_26/POSE_2025_26/pose_uebung_02",
+    "os": "windows",
+    "defaultBranch": "master"
+  },
+  "github": {
+    "owner": "IxI-Enki",
+    "repo": "POSE_2025_26_uebung_02",
+    "remoteUrl": "git@github.com:IxI-Enki/POSE_2025_26_uebung_02.git"
+  },
+  "subject": {
+    "code": "POSE",
+    "name": "Programming and Software Engineering",
+    "schoolYear": "2025/26",
+    "exercise": {
+      "name": "SEeToDoList",
+      "number": "02",
+      "dueDate": "2025-09-30"
+    }
+  },
+  "automation": {
+    "cadence": "weekly",
+    "tasks": [
+      "validate-structure",
+      "check-deadlines",
+      "sync-remote",
+      "lint-markdown-files",
+      "validate-links"
+    ]
+  }
+}
