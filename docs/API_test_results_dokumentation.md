@@ -4,8 +4,7 @@
 flowchart LR
   %% Nodes
   client[[Client]]:::client
-  db[(DB)]:::db
-  validator[[Validator]]:::svc
+  webapi[[WebAPI]]:::svc
 
   %% GET TdLists/count
   g1([GET /TdLists/count]):::get
@@ -13,12 +12,12 @@ flowchart LR
 
   %% POST /TdLists create
   p1([POST /TdLists]):::post
-  p1payload>payload<br/>name=Personal;<br/>description=Personal list;<br/>createdOn=ISO-8601]:::payload
+  p1payload["payload<br/>name: Personal<br/>description: Personal list<br/>createdOn: ISO-8601"]:::payload
   r201a[[201 Created<br/>id: 3]]:::ok
 
-  %% POST /TdLists duplicate
+  %% POST /TdLists duplicate (failure)
   p2([POST /TdLists]):::post
-  p2payload>payload<br/>name=Inbox;<br/>description=Dup test;<br/>createdOn=ISO-8601]:::payload
+  p2payload["payload<br/>name: Inbox<br/>description: Dup test<br/>createdOn: ISO-8601"]:::payload
   r400a[[400 BadRequest<br/>duplicate name]]:::bad
 
   %% GET /TdLists
@@ -61,37 +60,38 @@ flowchart LR
   g3([GET /TdTasks/count]):::get
   r200e[[200 OK<br/>count: 2]]:::ok
 
-  %% Flows
-  client --> g1 --> db --> r200a --> client
-  client --> p1 --> validator --> db --> r201a --> client
+  %% Flows (Client -> WebAPI -> Client)
+  client --> g1 --> webapi --> r200a --> client
+
+  client --> p1 --> webapi --> r201a --> client
   p1 -.-> p1payload
 
-  client --> p2 --> validator --> r400a --> client
+  client --> p2 --> webapi --> r400a --> client
   p2 -.-> p2payload
 
-  client --> g2 --> db --> r200b --> client
+  client --> g2 --> webapi --> r200b --> client
 
-  client --> t1 --> validator --> db --> r201b --> client
+  client --> t1 --> webapi --> r201b --> client
   t1 -.-> t1payload
 
-  client --> t2 --> validator --> r400b --> client
+  client --> t2 --> webapi --> r400b --> client
   t2 -.-> t2payload
 
-  client --> t3 --> validator --> r400c --> client
+  client --> t3 --> webapi --> r400c --> client
   t3 -.-> t3payload
 
-  client --> t4 --> validator --> r400d --> client
+  client --> t4 --> webapi --> r400d --> client
   t4 -.-> t4payload
 
-  client --> u1 --> db --> r200c --> client
+  client --> u1 --> webapi --> r200c --> client
   u1 -.-> u1payload
 
-  client --> pa1 --> db --> r200d --> client
+  client --> pa1 --> webapi --> r200d --> client
   pa1 -.-> pa1payload
 
-  client --> d1 --> db --> r204a --> client
+  client --> d1 --> webapi --> r204a --> client
 
-  client --> g3 --> db --> r200e --> client
+  client --> g3 --> webapi --> r200e --> client
 
   %% Styles
   classDef client fill:#0b1020,stroke:#60a5fa,color:#e5e7eb,stroke-width:1.5px
