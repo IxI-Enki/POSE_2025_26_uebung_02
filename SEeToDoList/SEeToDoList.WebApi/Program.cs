@@ -33,7 +33,9 @@ namespace SEeToDoList.WebApi
                     policy.WithOrigins(
                               "http://127.0.0.1:4200",
                               "http://localhost:4200",
-                              "http://127.0.0.1:54091"
+                              "http://127.0.0.1:54091",
+                              "http://localhost:54091",
+                              "https://localhost:54091"
                           )
                           .AllowAnyHeader()
                           .AllowAnyMethod();
