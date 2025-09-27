@@ -1,0 +1,111 @@
+﻿//@GeneratedCode
+@startuml SEeToDoList.Logic.Entities.Data.TdTask
++class TdTask #whitesmoke {
+    - String _title
+    - String _description
+    - Nullable<DateTime> _dueDate
+    - Nullable<DateTime> _completedOn
+    - Boolean _isCompleted
+    - Int32 _priority
+    - Int32 _tdListId
+    - TdList _tdList
+    ---
+     + String getTitle()
+     + setTitle(String value)
+     + String getDescription()
+     + setDescription(String value)
+     + Nullable<DateTime> getDueDate()
+     + setDueDate(Nullable<DateTime> value)
+     + Nullable<DateTime> getCompletedOn()
+     + setCompletedOn(Nullable<DateTime> value)
+     + Boolean getIsCompleted()
+     + setIsCompleted(Boolean value)
+     + Int32 getPriority()
+     + setPriority(Int32 value)
+     + Int32 getTdListId()
+     + setTdListId(Int32 value)
+     + TdList getTdList()
+     + setTdList(TdList value)
+    ---
+    + {static}Boolean IsTitleValid(String value)
+    ---
+    + String get_Title()
+    + Void set_Title(String value)
+    + String get_Description()
+    + Void set_Description(String value)
+    + Nullable<DateTime> get_DueDate()
+    + Void set_DueDate(Nullable`1 value)
+    + Nullable<DateTime> get_CompletedOn()
+    + Void set_CompletedOn(Nullable`1 value)
+    + Boolean get_IsCompleted()
+    + Void set_IsCompleted(Boolean value)
+    + Int32 get_Priority()
+    + Void set_Priority(Int32 value)
+    + Int32 get_TdListId()
+    + Void set_TdListId(Int32 value)
+    + TdList get_TdList()
+    + Void set_TdList(TdList value)
+    + Void Validate(IContext context, EntityState entityState)
+}
++abstract class EntityObject #white {
+    - Int32 _id
+    ---
+     + Int32 getId()
+     + setId(Int32 value)
+    ---
+    + Int32 get_Id()
+    + Void set_Id(Int32 value)
+}
++abstract class DbObject #white {
+}
+interface ITdTask #lightgrey {
+     + String getTitle()
+     + setTitle(String value)
+     + String getDescription()
+     + setDescription(String value)
+     + Nullable<DateTime> getDueDate()
+     + setDueDate(Nullable<DateTime> value)
+     + Nullable<DateTime> getCompletedOn()
+     + setCompletedOn(Nullable<DateTime> value)
+     + Boolean getIsCompleted()
+     + setIsCompleted(Boolean value)
+     + Int32 getPriority()
+     + setPriority(Int32 value)
+     + Int32 getTdListId()
+     + setTdListId(Int32 value)
+    ---
+    + String get_Title()
+    + Void set_Title(String value)
+    + String get_Description()
+    + Void set_Description(String value)
+    + Nullable<DateTime> get_DueDate()
+    + Void set_DueDate(Nullable`1 value)
+    + Nullable<DateTime> get_CompletedOn()
+    + Void set_CompletedOn(Nullable`1 value)
+    + Boolean get_IsCompleted()
+    + Void set_IsCompleted(Boolean value)
+    + Int32 get_Priority()
+    + Void set_Priority(Int32 value)
+    + Int32 get_TdListId()
+    + Void set_TdListId(Int32 value)
+    + Void CopyProperties(ITdTask other)
+}
+interface IValidatableEntity #lightgrey {
+    + Void Validate(IContext context, EntityState entityState)
+}
+interface IIdentifiable #lightgrey {
+     + Int32 getId()
+     + setId(Int32 value)
+    ---
+    + Int32 get_Id()
+    + Void set_Id(Int32 value)
+    + Void CopyProperties(IIdentifiable other)
+}
+EntityObject <|-- TdTask
+DbObject <|-- EntityObject
+IIdentifiable <|.. ITdTask
+ITdTask ()- TdTask
+IValidatableEntity ()- TdTask
+IIdentifiable ()- EntityObject
+TdTask --> "0..1" TdList
+@enduml

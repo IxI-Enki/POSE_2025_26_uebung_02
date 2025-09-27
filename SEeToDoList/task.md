@@ -2,38 +2,47 @@
 
 ## Projektbeschreibung
 
-Kurze allgemeine Beschreibung des Projektes.
+Kurze allgemeine Beschreibung des Projekts.
 
-### Anforderungen
+## Anforderungen
 
-Hier die zusätzliche Anforderungen definieren.
+Hier die zusätzlichen Anforderungen definieren.
 
-### Technische Details
+## Technische Details
 
-Setze die Anforderungen in folgenden Schritten um:
+Setze die Anforderungen in den folgenden Schritten um:
 
-1. **Datenmodell erstellen**:
-  - Definiere die entsprechenden Entitäten mit den entsprechenden Einschränkungen. Halte dich bei der Umsetzung der Entitäten an die Vorgaben im Dokument `entities_template.md`.
-  - Entitäten für Bewegungsdaten erstelle im Unterordner `App`
-  - Alle anderen Entitäten erstelle im Unterordner `Data`
-2. **Entity-Modell prüfen**:
-  - Lass uns gemeinsam das Entity-Modell überprüfen. Erst wenn das Entity-Modell abgenommen ist, kannst du mit den nächsten Schritten fortfahren.
-3. **CodeGenerierung ausführen**:
-  - Führe die CodeGenerierung mit folgendem Befehl aus:
+1. **Datenmodell erstellen**
+   - Definiere die entsprechenden Entitäten mit den jeweiligen Einschränkungen.
+     Orientiere dich an den Vorgaben in `entities_template.md`.
+   - Lege Entitäten für Bewegungsdaten im Unterordner `App` an.
+   - Lege alle anderen Entitäten im Unterordner `Data` an.
 
-```bash
-dotnet run --project TemplateTools.ConApp -- AppArg=4,9,x,x
-```
+2. **Entity-Modell prüfen**
+   - Überprüfe das Entity-Modell gemeinsam mit dem Team.
+     Fahre erst nach Freigabe mit den nächsten Schritten fort.
 
-4. **CSV-Import erstellen**:
-  - Erstelle eine Klasse, die den Import von CSV-Dateien ermöglicht. Halte dich bei der Umsetzung des Imports an die Vorgaben im Dokument `import_template.md`.
-5. **Benutzeroberfläche erstellen**:
-  - Erstelle eine einfache Benutzeroberfläche, die es ermöglicht, die Daten im System zu verwalten. Halte dich bei der Umsetzung der Entitäten an die Vorgaben im Dokument `forms_template.md`.
-6. **Routing-Module**:
-  - Trage alle Komponenten vom Ordner `src/app/pages/entities` in das Routing-Module ein.
-7. **Dashboard anpassen**:
-  - Passe das Dashboard an und trage die Komponenten vom Ordner `src/app/pages/entities` in das Dashboard ein.
-8. **README erstellen**:
-  - Erstelle eine README-Datei, die das Projekt beschreibt und Anweisungen zur Installation und Nutzung enthält. Halte dich bei der Umsetzung der README an die Vorgaben im Dokument `readme_template.md`.
+3. **Codegenerierung ausführen**
+   - Führe die Codegenerierung mit folgendem Befehl aus:
+
+     ```bash
+     dotnet run --project TemplateTools.ConApp -- AppArg=4,9,x,x
+     ```
+
+4. **CSV-Import erstellen**
+   - Implementiere eine Klasse für den Import von CSV-Dateien gemäß den Vorgaben in `import_template.md`.
+
+5. **Benutzeroberfläche erstellen**
+   - Entwickle eine einfache Benutzeroberfläche zur Verwaltung der Daten. Beachte die Vorgaben in `forms_template.md`.
+
+6. **Routing-Module**
+   - Füge alle Komponenten aus dem Ordner `src/app/pages/entities` in das Routing-Modul ein.
+
+7. **Dashboard anpassen**
+   - Ergänze das Dashboard um die Komponenten aus `src/app/pages/entities`.
+
+8. **README erstellen**
+   - Erstelle eine README-Datei, die das Projekt beschreibt und
+     Installations- sowie Nutzungshinweise enthält. Orientiere dich an `readme_template.md`.
 
 Viel Erfolg bei der Umsetzung des Projekts!

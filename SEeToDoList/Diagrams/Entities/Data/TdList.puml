@@ -1,0 +1,84 @@
+﻿//@GeneratedCode
+@startuml SEeToDoList.Logic.Entities.Data.TdList
++class TdList #whitesmoke {
+    - String _name
+    - String _description
+    - DateTime _createdOn
+    - Nullable<DateTime> _completedOn
+    - List<TdTask> _tasks
+    ---
+     + String getName()
+     + setName(String value)
+     + String getDescription()
+     + setDescription(String value)
+     + DateTime getCreatedOn()
+     + setCreatedOn(DateTime value)
+     + Nullable<DateTime> getCompletedOn()
+     + setCompletedOn(Nullable<DateTime> value)
+     + List<TdTask> getTasks()
+     + setTasks(List<TdTask> value)
+    ---
+    + {static}Boolean IsNameValid(String value)
+    ---
+    + String get_Name()
+    + Void set_Name(String value)
+    + String get_Description()
+    + Void set_Description(String value)
+    + DateTime get_CreatedOn()
+    + Void set_CreatedOn(DateTime value)
+    + Nullable<DateTime> get_CompletedOn()
+    + Void set_CompletedOn(Nullable`1 value)
+    + List<TdTask> get_Tasks()
+    + Void set_Tasks(List`1 value)
+    + Void Validate(IContext context, EntityState entityState)
+}
++abstract class EntityObject #white {
+    - Int32 _id
+    ---
+     + Int32 getId()
+     + setId(Int32 value)
+    ---
+    + Int32 get_Id()
+    + Void set_Id(Int32 value)
+}
++abstract class DbObject #white {
+}
+interface ITdList #lightgrey {
+     + String getName()
+     + setName(String value)
+     + String getDescription()
+     + setDescription(String value)
+     + DateTime getCreatedOn()
+     + setCreatedOn(DateTime value)
+     + Nullable<DateTime> getCompletedOn()
+     + setCompletedOn(Nullable<DateTime> value)
+    ---
+    + String get_Name()
+    + Void set_Name(String value)
+    + String get_Description()
+    + Void set_Description(String value)
+    + DateTime get_CreatedOn()
+    + Void set_CreatedOn(DateTime value)
+    + Nullable<DateTime> get_CompletedOn()
+    + Void set_CompletedOn(Nullable`1 value)
+    + Void CopyProperties(ITdList other)
+}
+interface IValidatableEntity #lightgrey {
+    + Void Validate(IContext context, EntityState entityState)
+}
+interface IIdentifiable #lightgrey {
+     + Int32 getId()
+     + setId(Int32 value)
+    ---
+    + Int32 get_Id()
+    + Void set_Id(Int32 value)
+    + Void CopyProperties(IIdentifiable other)
+}
+EntityObject <|-- TdList
+DbObject <|-- EntityObject
+IIdentifiable <|.. ITdList
+ITdList ()- TdList
+IValidatableEntity ()- TdList
+IIdentifiable ()- EntityObject
+TdList "*" o-- "0..1" TdTask
+@enduml
