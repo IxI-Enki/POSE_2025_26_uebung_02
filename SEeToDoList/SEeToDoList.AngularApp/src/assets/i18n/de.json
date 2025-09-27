@@ -1,7 +1,7 @@
 {
   "APP": {
-    "TITLE": "SETemplate",
-    "BRAND": "SETemplate"
+    "TITLE": "SEeToDoList",
+    "BRAND": "SEeToDoList"
   },
   "NAVIGATION": {
     "DASHBOARD": "Dashboard"
@@ -33,7 +33,7 @@
   },
   "DASHBOARD": {
     "TITLE": "Dashboard",
-    "WELCOME": "Willkommen im SEeTimeManager!",
+    "WELCOME": "Willkommen in SEeToDoList!",
     "PUBLIC_ACCESS": "Öffentlicher Zugang",
     "PROTECTED_AREA": "Geschützter Bereich",
     "STATISTICS": "Statistiken",
