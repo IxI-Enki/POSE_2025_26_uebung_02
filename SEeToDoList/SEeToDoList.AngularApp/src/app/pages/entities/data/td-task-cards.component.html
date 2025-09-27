@@ -1,6 +1,10 @@
 <!--@CustomCode-->
 <div class="container mt-4">
   <div class="d-flex gap-2 mb-3 align-items-center">
+    <div class="btn-group me-2" role="group" aria-label="View toggle">
+      <a class="btn btn-outline-secondary" routerLink="/entities/tdtasks">{{ 'VIEW.LIST' | translate }}</a>
+      <a class="btn btn-secondary active" routerLink="/entities/tdtask-cards">{{ 'VIEW.CARDS' | translate }}</a>
+    </div>
     <input *ngIf="canSearch" type="text" class="form-control" [(ngModel)]="searchTerm" [placeholder]="'COMMON.SEARCH_PLACEHOLDER' | translate" />
     <button *ngIf="canRefresh" class="btn btn-success" (click)="reloadData()">
       <i class="bi bi-arrow-clockwise"></i>

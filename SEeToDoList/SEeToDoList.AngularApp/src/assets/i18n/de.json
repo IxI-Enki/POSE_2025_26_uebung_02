@@ -67,6 +67,10 @@
     "TASKS_MOST": "Meiste Aufgaben",
     "TASKS_FEWEST": "Wenigste Aufgaben"
   },
+  "VIEW": {
+    "LIST": "Liste",
+    "CARDS": "Karten"
+  },
   "MESSAGE_BOX": {
     "TITLE": "Hinweis",
     "CONFIRM_TITLE": "Bitte bestätigen",

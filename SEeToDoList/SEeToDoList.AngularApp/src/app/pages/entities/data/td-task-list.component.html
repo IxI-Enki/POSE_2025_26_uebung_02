@@ -2,12 +2,16 @@
 <div class="container mt-4">
   <h3 class="mb-4">{{ 'DASHBOARD.CARDS.TDTASK_TITLE' | translate }}</h3>
 
-  <div class="d-flex mb-3">
-    <button *ngIf="canAdd" class="btn btn-primary me-2" (click)="addCommand()">
+  <div class="d-flex mb-3 align-items-center gap-2">
+    <div class="btn-group me-2" role="group" aria-label="View toggle">
+      <a class="btn btn-secondary active" routerLink="/entities/tdtasks">{{ 'VIEW.LIST' | translate }}</a>
+      <a class="btn btn-outline-secondary" routerLink="/entities/tdtask-cards">{{ 'VIEW.CARDS' | translate }}</a>
+    </div>
+    <button *ngIf="canAdd" class="btn btn-primary" (click)="addCommand()">
       <i class="bi bi-plus"></i>
     </button>
-    <input *ngIf="canSearch" type="text" class="form-control me-2" [(ngModel)]="searchTerm" [placeholder]="'COMMON.SEARCH_PLACEHOLDER' | translate" />
-    <button *ngIf="canRefresh" class="btn btn-success me-2" (click)="reloadData()">
+    <input *ngIf="canSearch" type="text" class="form-control" [(ngModel)]="searchTerm" [placeholder]="'COMMON.SEARCH_PLACEHOLDER' | translate" />
+    <button *ngIf="canRefresh" class="btn btn-success" (click)="reloadData()">
       <i class="bi bi-arrow-clockwise"></i>
     </button>
   </div>

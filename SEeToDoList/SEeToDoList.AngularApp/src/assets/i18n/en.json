@@ -67,6 +67,10 @@
     "TASKS_MOST": "Most tasks",
     "TASKS_FEWEST": "Fewest tasks"
   },
+  "VIEW": {
+    "LIST": "List",
+    "CARDS": "Cards"
+  },
   "MESSAGE_BOX": {
     "TITLE": "Notice",
     "CONFIRM_TITLE": "Please confirm",
