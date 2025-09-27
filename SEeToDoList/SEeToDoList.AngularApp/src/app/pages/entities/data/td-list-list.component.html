@@ -35,7 +35,11 @@
     </thead>
     <tbody>
       <ng-container *ngFor="let item of dataItems; let i = index" cdkDrag>
-        <tr>
+        <tr cdkDropList
+            [id]="getRowDropId(item)"
+            [cdkDropListConnectedTo]="getAllDropIds()"
+            [cdkDropListData]="tasksByListId[item.id]"
+            (cdkDropListDropped)="dropOnListRow(item, $event)">
           <td>
             <button class="btn btn-sm btn-outline-secondary" (click)="toggleTasks(item)" [attr.aria-expanded]="expanded[item.id]">
               <i class="bi" [ngClass]="expanded[item.id] ? 'bi-caret-down-square' : 'bi-caret-right-square'"></i>
@@ -44,8 +48,7 @@
           <td class="fw-semibold">{{ item.name }}</td>
           <td>{{ item.description }}</td>
           <td>
-            <span *ngIf="getTaskCount(item) !== undefined" class="badge text-bg-secondary">{{ getTaskCount(item) }}</span>
-            <span *ngIf="getTaskCount(item) === undefined" class="text-muted small">—</span>
+            <span class="badge text-bg-secondary">{{ getCount(item) }}</span>
           </td>
           <td *ngIf="canEdit || canDelete">
             <div class="d-flex gap-1">
@@ -87,9 +90,9 @@
 
               <table class="table table-sm table-striped mb-0"
                      cdkDropList
-                     [id]="getDropId(item)"
+                     [id]="getTaskTableId(item)"
                      [cdkDropListData]="tasksByListId[item.id]"
-                     [cdkDropListConnectedTo]="getConnectedDropIds(item)"
+                     [cdkDropListConnectedTo]="getAllDropIds()"
                      (cdkDropListDropped)="dropTask(item, $event)">
                 <thead>
                   <tr>

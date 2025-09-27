@@ -29,6 +29,7 @@ export class TdListListComponent extends TdListBaseListComponent {
   public newTaskByListId: Record<number, ITdTask | undefined> = {};
   public editingTaskCopyById: Record<number, ITdTask | undefined> = {};
   public savingByListId: Record<number, boolean> = {};
+  public countsByListId: Record<number, number> = {};
 
   // sorting
   public sortOption: 'nameAsc' | 'nameDesc' | 'createdDesc' | 'createdAsc' = 'nameAsc';
@@ -40,6 +41,8 @@ export class TdListListComponent extends TdListBaseListComponent {
   override ngOnInit(): void {
     this._queryParams.filter = 'name.ToLower().Contains(@0) OR description.ToLower().Contains(@0)';
     this.reloadData();
+    // load counts initially
+    this.loadAllCounts();
   }
   protected override getItemKey(item: ITdList): IdType {
     return item?.id || IdDefault;
@@ -69,19 +72,77 @@ export class TdListListComponent extends TdListBaseListComponent {
     return sorted;
   }
 //@CustomCodeBegin
-  public getDropId(list: ITdList): string {
-    return `list-${list.id}`;
+  private loadAllCounts() {
+    this.taskService.getAll().subscribe(all => {
+      const map: Record<number, number> = {};
+      for (const t of all) {
+        const lid = (t.tdListId as any) as number;
+        map[lid] = (map[lid] ?? 0) + 1;
+      }
+      this.countsByListId = map;
+    });
   }
-  public getConnectedDropIds(current: ITdList): string[] {
-    return Object.keys(this.expanded)
-      .filter(k => this.expanded[+k])
-      .map(k => `list-${k}`)
-      .filter(id => id !== this.getDropId(current));
+  public getCount(list: ITdList): number {
+    const id = list.id as number;
+    return this.countsByListId[id] ?? 0;
+  }
+
+  public getRowDropId(list: ITdList): string { return `list-${list.id}`; }
+  public getTaskTableId(list: ITdList): string { return `tasks-${list.id}`; }
+  public getAllRowDropIds(): string[] {
+    return (this.dataItems || []).map(l => this.getRowDropId(l));
+  }
+  public getAllTaskTableIds(): string[] {
+    return Object.keys(this.expanded).filter(k => this.expanded[+k]).map(k => `tasks-${k}`);
+  }
+  public getAllDropIds(): string[] {
+    return [...this.getAllRowDropIds(), ...this.getAllTaskTableIds()];
   }
 
   public dropList(event: CdkDragDrop<ITdList[]>) {
     moveItemInArray(this.dataItems, event.previousIndex, event.currentIndex);
   }
+
+  public dropOnListRow(list: ITdList, event: CdkDragDrop<ITdTask[]>) {
+    // Allow dropping onto collapsed row
+    const targetId = list.id as number;
+    this.tasksByListId[targetId] = this.tasksByListId[targetId] || [];
+    if (event.previousContainer === event.container) return;
+
+    const sourceArray = (event.previousContainer.data ?? []) as ITdTask[];
+    const targetArray = (event.container.data ?? []) as ITdTask[];
+
+    transferArrayItem(sourceArray, targetArray, event.previousIndex, targetArray.length);
+    const movedTask = targetArray[targetArray.length - 1];
+    const sourceId = Number(String(event.previousContainer.id).replace('list-','').replace('tasks-','')) || (movedTask?.tdListId as any);
+
+    if (movedTask) {
+      const previousListId = movedTask.tdListId as any;
+      movedTask.tdListId = targetId as any;
+      this.taskService.update(movedTask).subscribe({
+        next: updated => {
+          // update counts
+          this.countsByListId[sourceId] = Math.max(0, (this.countsByListId[sourceId] ?? 1) - 1);
+          this.countsByListId[targetId] = (this.countsByListId[targetId] ?? 0) + 1;
+          // sync target array
+          const idx = targetArray.findIndex(t => t.id === updated.id);
+          if (idx >= 0) targetArray[idx] = updated;
+          this.tasksByListId[targetId] = [...targetArray];
+        },
+        error: _ => {
+          // revert
+          const tgt = this.tasksByListId[targetId] || [];
+          const revertIndex = tgt.findIndex(t => t === movedTask);
+          if (revertIndex >= 0) {
+            transferArrayItem(tgt, sourceArray, revertIndex, sourceArray.length);
+            this.tasksByListId[targetId] = [...tgt];
+          }
+          movedTask.tdListId = previousListId;
+        }
+      });
+    }
+  }
+
   public dropTask(list: ITdList, event: CdkDragDrop<ITdTask[]>) {
     const targetId = list.id as number;
     const targetArray = (event.container.data ?? []) as ITdTask[];
@@ -91,27 +152,26 @@ export class TdListListComponent extends TdListBaseListComponent {
       this.tasksByListId[targetId] = [...targetArray];
     } else {
       const sourceArray = (event.previousContainer.data ?? []) as ITdTask[];
-      // ensure both arrays are tracked
-      const sourceId = Number(String(event.previousContainer.id).replace('list-','')) || 0;
+      const sourceId = Number(String(event.previousContainer.id).replace('list-','').replace('tasks-','')) || 0;
       this.tasksByListId[sourceId] = sourceArray;
       this.tasksByListId[targetId] = targetArray;
 
       transferArrayItem(sourceArray, targetArray, event.previousIndex, event.currentIndex);
       const movedTask = targetArray[event.currentIndex];
-      // persist list change
       if (movedTask) {
         const previousListId = movedTask.tdListId as any;
         movedTask.tdListId = targetId as any;
         this.taskService.update(movedTask).subscribe({
           next: updated => {
-            // keep arrays in sync
             const tgt = this.tasksByListId[targetId] || [];
             const idx = tgt.findIndex(t => t.id === updated.id);
             if (idx >= 0) tgt[idx] = updated;
             this.tasksByListId[targetId] = [...tgt];
+            // update counts
+            this.countsByListId[sourceId] = Math.max(0, (this.countsByListId[sourceId] ?? 1) - 1);
+            this.countsByListId[targetId] = (this.countsByListId[targetId] ?? 0) + 1;
           },
           error: _ => {
-            // revert on error
             const tgt = this.tasksByListId[targetId] || [];
             const src = this.tasksByListId[sourceId] || [];
             const revertIndex = tgt.findIndex(t => t === movedTask);
@@ -131,12 +191,10 @@ export class TdListListComponent extends TdListBaseListComponent {
     const id = list.id as number;
     this.expanded[id] = !this.expanded[id];
     if (this.expanded[id]) {
-      // ensure array exists for DnD target
       this.tasksByListId[id] = this.tasksByListId[id] || [];
     }
     if (this.expanded[id] && this.tasksByListId[id].length === 0 && !this.loadingTasks[id]) {
       this.loadingTasks[id] = true;
-      // Load all tasks and filter client-side to avoid backend predicate quirks
       this.taskService.getAll()
         .subscribe(items => {
           this.tasksByListId[id] = items.filter(t => (t.tdListId as any) === id);
@@ -170,6 +228,7 @@ export class TdListListComponent extends TdListBaseListComponent {
         this.tasksByListId[id] = [...(this.tasksByListId[id] || []), created];
         this.newTaskByListId[id] = undefined;
         this.savingByListId[id] = false;
+        this.countsByListId[id] = (this.countsByListId[id] ?? 0) + 1;
       });
   }
 
@@ -210,6 +269,7 @@ export class TdListListComponent extends TdListBaseListComponent {
         const arr = (this.tasksByListId[id] || []).filter(t => t.id !== task.id);
         this.tasksByListId[id] = arr;
         this.savingByListId[id] = false;
+        this.countsByListId[id] = Math.max(0, (this.countsByListId[id] ?? 1) - 1);
       });
   }
 
