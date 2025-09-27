@@ -13,12 +13,12 @@ flowchart LR
 
   %% POST /TdLists create
   p1([POST /TdLists]):::post
-  p1payload>payload<br/>{ name: Personal,<br/> description: Personal list,<br/> createdOn: ISO-8601 }]:::payload
+  p1payload>payload<br/>name=Personal;<br/>description=Personal list;<br/>createdOn=ISO-8601]:::payload
   r201a[[201 Created<br/>id: 3]]:::ok
 
   %% POST /TdLists duplicate
   p2([POST /TdLists]):::post
-  p2payload>payload<br/>{ name: Inbox,<br/> description: Dup test,<br/> createdOn: ISO-8601 }]:::payload
+  p2payload>payload<br/>name=Inbox;<br/>description=Dup test;<br/>createdOn=ISO-8601]:::payload
   r400a[[400 BadRequest<br/>duplicate name]]:::bad
 
   %% GET /TdLists
@@ -27,30 +27,30 @@ flowchart LR
 
   %% POST /TdTasks valid
   t1([POST /TdTasks]):::post
-  t1payload>payload<br/>{ title: Plan trip,<br/> tdListId: 3,<br/> priority: 2,<br/> dueDate: ISO-8601 }]:::payload
+  t1payload>payload<br/>title=Plan trip;<br/>tdListId=3;<br/>priority=2;<br/>dueDate=ISO-8601]:::payload
   r201b[[201 Created<br/>task id: 3]]:::ok
 
   %% POST /TdTasks failures
   t2([POST /TdTasks]):::post
-  t2payload>payload<br/>{ title: (empty),<br/> tdListId: 3 }]:::payload
+  t2payload>payload<br/>title=(empty);<br/>tdListId=3]:::payload
   r400b[[400 BadRequest<br/>title invalid]]:::bad
 
   t3([POST /TdTasks]):::post
-  t3payload>payload<br/>{ title: Finish taxes,<br/> isCompleted: true,<br/> completedOn: (missing) }]:::payload
+  t3payload>payload<br/>title=Finish taxes;<br/>isCompleted=true;<br/>completedOn=(missing)]:::payload
   r400c[[400 BadRequest<br/>completedOn required]]:::bad
 
   t4([POST /TdTasks]):::post
-  t4payload>payload<br/>{ title: Orphan task,<br/> tdListId: 999999 }]:::payload
+  t4payload>payload<br/>title=Orphan task;<br/>tdListId=999999]:::payload
   r400d[[400 BadRequest<br/>list not found]]:::bad
 
   %% PUT /TdTasks/{id}
   u1([PUT /TdTasks/3]):::put
-  u1payload>payload<br/>{ title: Plan summer trip,<br/> priority: 1 }]:::payload
+  u1payload>payload<br/>title=Plan summer trip;<br/>priority=1]:::payload
   r200c[[200 OK]]:::ok
 
   %% PATCH /TdTasks/{id}
   pa1([PATCH /TdTasks/3]):::patch
-  pa1payload>payload<br/>[ { op: replace, path: /isCompleted, value: true },<br/> { op: replace, path: /completedOn, value: ISO-8601 } ]:::payload
+  pa1payload>payload<br/>op=replace:/isCompleted=true;<br/>op=replace:/completedOn=ISO-8601]:::payload
   r200d[[200 OK]]:::ok
 
   %% DELETE /TdTasks/{id}
