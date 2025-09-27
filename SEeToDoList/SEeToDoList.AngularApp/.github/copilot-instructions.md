@@ -3,6 +3,7 @@
 ## Projektübersicht
 
 SEeToDoList ist ein Basis-Template für die Erstellung der Anwendung mit Code-Generierung:
+
 - **Backend**: .NET 8.0 mit Entity Framework Core
 - **Frontend**: Angular 18 mit Bootstrap und standalone Komponenten
 - **Code-Generierung**: Template-gesteuerte Erstellung aller CRUD-Operationen
@@ -11,13 +12,16 @@ SEeToDoList ist ein Basis-Template für die Erstellung der Anwendung mit Code-Ge
 ## Kernprinzipien
 
 ### 1. Code-Generierung First
+
 **⚠️ NIEMALS manuell Controllers, Services oder CRUD-Operationen erstellen!**
+
 ```bash
 # Code-Generierung ausführen:
 dotnet run --project TemplateTools.ConApp -- AppArg=4,9,x,x
 ```
 
 ### 2. Code-Marker System
+
 - `//@AiCode` - Generierter Code, nicht bearbeiten
 - `//@GeneratedCode` - Zeigt an, dass dieser Code vom Generator generiert wurde und bei der nächsten Generierung überschrieben wird.
 - `//@CustomCode` - Falls in einer generierten Datei (@GeneratedCode) eine Änderung erfolgt, dann wird der Label @GeneratedCode zu @CustomCode geändert. Damit wird verhindert, dass der Code vom Generator überschrieben wird.
@@ -28,6 +32,7 @@ dotnet run --project TemplateTools.ConApp -- AppArg=4,9,x,x
 Die Entitäten werden immer mit englischen Bezeichner benannt.
 
 ### Dateistruktur
+
 - **Stammdaten**: `SEeToDoList.Logic/Entities/Data/`
 - **Anwendungsdaten**: `SEeToDoList.Logic/Entities/App/`
 - **Account**: `SEeToDoList.Logic/Entities/Account/`
@@ -325,6 +330,7 @@ namespace SEeToDoList.ConApp.Apps
 ```
 
 ### CSV Format
+
 ```csv
 #Name;Description
 Developer;Software Developer
@@ -336,6 +342,7 @@ Manager;Project Manager
 Die Generierung der Komponenten erfolgt für die Listen die sich im Ordner 'src/app/pages/entities/' befinden. Die dazugehörigen Edit Komponenten befinden sich im Ordner 'src/app/components/entities'.
 
 ### List Component Template
+
 ```html
 <!--@AiCode-->
 <div class="container mt-4">
@@ -391,12 +398,12 @@ Die Generierung der Komponenten erfolgt für die Listen die sich im Ordner 'src/
 
 ### Bearbeitungsansicht (Edit-Formular)
 
-* Für die Ansicht ist eine **Bootstrap-Card-Ansicht** zu verwenden.
-* Die Komponenten sind bereits erstellt und befinden sich im Ordner `src/app/components/entities`.
-* Alle Komponenten sind `standalone` Komponenten.
-* **Dateiname:** `entity-name-edit.component.html`
-* **Übersetzungen:** Ergänze die beiden Übersetzungsdateien `de.json` und `en.json` um die hinzugefügten Labels.
-* Beispielstruktur:
+- Für die Ansicht ist eine **Bootstrap-Card-Ansicht** zu verwenden.
+- Die Komponenten sind bereits erstellt und befinden sich im Ordner `src/app/components/entities`.
+- Alle Komponenten sind `standalone` Komponenten.
+- **Dateiname:** `entity-name-edit.component.html`
+- **Übersetzungen:** Ergänze die beiden Übersetzungsdateien `de.json` und `en.json` um die hinzugefügten Labels.
+- Beispielstruktur:
 
 ```html
 <!--@AiCode-->
@@ -512,22 +519,26 @@ In manchen Fällen ist eine Master/Details Ansicht sehr hilfreich. Diese Anzeige
 ## Entwicklungs-Workflow
 
 ### 1. Entity erstellen
+
 1. Entity-Klasse in `Logic/Entities/{Data|App}/` erstellen
 2. Validierung in separater `.Validation.cs` Datei
 3. Das Entity-Modell mit dem Benutzer abklären und bestätigen lassen.
 
 ### 2. Code-Generierung
+
 3. Code-Generierung ausführen: `dotnet run --project TemplateTools.ConApp -- AppArg=4,9,x,x`
 
 ### 3. Daten-Import
+
 1. CSV-Datei in `ConApp/data/entityname_set.csv` erstellen
 2. Einstellen, dass die CSV-Datei ins Ausgabeverzeichnis kopiert wird
 3. Import-Logic in `StarterApp.Import.cs` hinzufügen
 4. Console-App ausführen und Import starten
 
 ### 4. Angular-Komponenten
+
 1. List- und Edit-Komponenten werden von der Code-Generierung generiert
-2. Falls du Komponenten manuell erstellst: 
+2. Falls du Komponenten manuell erstellst:
    - Bitte im Ordner 'src/app/pages/' bzw. 'src/app/components/' ablegen.
    - Immer 'standalone' komponenten verwenden.
    - Immer mit HTML-Templates in einer separaten Datei arbeiten.
@@ -537,6 +548,7 @@ In manchen Fällen ist eine Master/Details Ansicht sehr hilfreich. Diese Anzeige
 5. Übersetzungen in `de.json` und `en.json` ergänzen
 
 ### 5. Anpassungen
+
 - Custom Code in `//@CustomCode` Bereichen
 - Separate `.Custom.cs` Dateien für erweiterte Logik
 - `editMode` boolean für Create/Edit-Unterscheidung
@@ -544,16 +556,19 @@ In manchen Fällen ist eine Master/Details Ansicht sehr hilfreich. Diese Anzeige
 ## Konventionen
 
 ### Naming
+
 - Entities: PascalCase, Englisch
 - Properties: PascalCase mit XML-Dokumentation
 - Navigation Properties: Vollqualifiziert
 
 ### Validierung
+
 - Keine Validierung für Id-Felder
 - BusinessRuleException für Geschäftsregeln
 - Async-Pattern mit RejectChangesAsync()
 
 ### Internationalisierung
+
 - Alle Labels in i18n-Dateien
 - Format: `ENTITYNAME_LIST.TITLE`
 - Unterstützung für DE/EN
@@ -561,11 +576,13 @@ In manchen Fällen ist eine Master/Details Ansicht sehr hilfreich. Diese Anzeige
 ## Troubleshooting
 
 ### Häufige Probleme
+
 - **Build-Fehler**: Code-Generierung ausführen nach Entity-Änderungen
 - **Import-Fehler**: CSV-Format und Beziehungen prüfen
 - **Routing**: Komponenten in `app-routing.module.ts` registrieren
 
 ### Debugging
+
 - Generated Code über `//@AiCode` Marker identifizieren
 - Custom Code in separaten Bereichen isolieren
 - Console-App für Datenbank-Tests nutzen
