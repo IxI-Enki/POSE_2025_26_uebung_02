@@ -3,16 +3,42 @@
 ```mermaid
 flowchart LR
   A[Client] -->|"GET TdLists count"| B[WebAPI]
-  A -->|"POST create list"| B
-  B -->|"201"| A
-  A -->|"POST duplicate list"| B
-  B -->|"400"| A
-  A -->|"POST create task"| B
-  B -->|"201"| A
-  A -->|"PATCH complete task"| B
-  B -->|"200"| A
+  B -->|"COUNT TdLists"| D[DB]
+  D -->|"rows: 2"| B
+  B -->|"200 OK count"| A
+
+  A -->|"POST create list: Name, Description, CreatedOn"| B
+  B -->|"validate: required + unique(Name)"| C[Validator]
+  C -->|"check unique in DB"| D
+  D -->|"unique"| C
+  C -->|"valid"| B
+  B -->|"INSERT TdList"| D
+  D -->|"id: 3"| B
+  B -->|"201 Created list"| A
+
+  A -->|"POST duplicate list: Name=Inbox"| B
+  B -->|"validate unique(Name)"| C
+  C -->|"duplicate"| B
+  B -->|"400 BadRequest duplicate"| A
+
+  A -->|"POST create task: Title, TdListId, ..."| B
+  B -->|"validate: Title required, FK exists"| C
+  C -->|"FK ok + Title ok"| B
+  B -->|"INSERT TdTask"| D
+  D -->|"id: 3"| B
+  B -->|"201 Created task"| A
+
+  A -->|"PATCH task complete"| B
+  B -->|"validate: CompletedOn needed when IsCompleted"| C
+  C -->|"valid"| B
+  B -->|"UPDATE TdTask set completed"| D
+  D -->|"ok"| B
+  B -->|"200 OK task"| A
+
   A -->|"DELETE task"| B
-  B -->|"204"| A
+  B -->|"DELETE TdTask by id"| D
+  D -->|"ok"| B
+  B -->|"204 NoContent"| A
 ```
 
 #### Environment
