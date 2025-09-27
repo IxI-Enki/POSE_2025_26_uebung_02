@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Serialization;
+using System;
 
 namespace SEeToDoList.WebApi
 {
@@ -30,15 +31,21 @@ namespace SEeToDoList.WebApi
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins(
-                              "http://127.0.0.1:4200",
-                              "http://localhost:4200",
-                              "http://127.0.0.1:54091",
-                              "http://localhost:54091",
-                              "https://localhost:54091"
-                          )
-                          .AllowAnyHeader()
-                          .AllowAnyMethod();
+                    policy
+                        .SetIsOriginAllowed(origin =>
+                        {
+                            try
+                            {
+                                var host = new Uri(origin).Host;
+                                return host == "localhost" || host == "127.0.0.1";
+                            }
+                            catch
+                            {
+                                return false;
+                            }
+                        })
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
                 });
             });
             // Added GeGe
@@ -47,10 +54,11 @@ namespace SEeToDoList.WebApi
 
             // Configure the HTTP request pipeline.
 
-            // Ensure CORS headers are present even on redirects
-            app.UseCors();
-
             app.UseHttpsRedirection();
+
+            // Added GeGe
+            app.UseCors();
+            // Added GeGe
 
             app.UseAuthorization();
 
