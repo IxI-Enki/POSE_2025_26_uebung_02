@@ -6,7 +6,7 @@ Kurze allgemeine Beschreibung des Projekts.
 
 ## Anforderungen
 
-Hier die zusätzlichen Anforderungen definieren.
+[Zusätzliche Anforderungen](../angabe/moodle_angabe.md)
 
 ## Technische Details
 
@@ -44,5 +44,27 @@ Setze die Anforderungen in den folgenden Schritten um:
 8. **README erstellen**
    - Erstelle eine README-Datei, die das Projekt beschreibt und
      Installations- sowie Nutzungshinweise enthält. Orientiere dich an `readme_template.md`.
+
+---
+
+## Zusätzliche Hinweise
+
+### Samples die du für die Umsetzung des Projekts verwenden musst
+
+- [sampleItemEdit.html](SEeToDoList.AngularApp/src/app/pages/entities/sampleItemEdit.html)
+- [sampleItemEdit.ts](SEeToDoList.AngularApp/src/app/pages/entities/sampleItemEdit.ts)
+- [sampleItemEntityList.html](SEeToDoList.AngularApp/src/app/pages/entities/sampleItemEntityList.html)
+- [sampleItemEntityList.ts](SEeToDoList.AngularApp/src/app/pages/entities/sampleItemEntityList.ts)
+- [sampleItemViewList.html](SEeToDoList.AngularApp/src/app/pages/entities/sampleItemViewList.html)
+- [sampleItemViewList.ts](SEeToDoList.AngularApp/src/app/pages/entities/sampleItemViewList.ts)
+  
+### Templates die du für die Umsetzung des Projekts verwenden musst
+
+- [entities_template.md](entities_template.md)
+- [forms_template.md](forms_template.md)
+- [import_template.md](import_template.md)
+- [readme_template.md](readme_template.md)
+
+---
 
 Viel Erfolg bei der Umsetzung des Projekts!

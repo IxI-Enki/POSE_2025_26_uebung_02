@@ -10,7 +10,7 @@ moodle_link: 'https://edufs.edu.htl-leonding.ac.at/moodle/mod/assign/view.php?id
 due_date: '2025-09-30 00:00'
 ---
 
-This repository contains the Moodle assignment for SEeToDoList (assignment code: 2526_78ABIF_78ACIF_POS_GEHR), standardized for documentation and submission.
+This repository contains the Moodle assignment for SEeToDoList (assignment code: 2526_78ABIF_78ACIF_POS_GEHR)
 
 ## 1. Goals
 
@@ -44,14 +44,15 @@ The exact exercise content (as fetched from Moodle) is available here:
 
 - `docs/`: Holds diagrams, explanations, other documentation and external sources like PDFs.
 
-- Course specific directories: e.g. `<course_specific_directory>/` (for example `sql/` for DDL, DML, and example queries).
+- Course specific directories:
+  e.g. `<course_specific_directory>/` (for example `sql/` for DDL, DML, and example queries).
 
 ---
 
 <!--
-Last Change
-  - Description   : Cleaned assignment content, consolidated angabe, and updated README
-  - Date          : 2025-09-27 11:50 
-  - Origin        : IxI-Enki/School-Repository-Agent
-  - File Version  : 1.1.0
+Update Log
+  - Description   : Updated README formatting and clarified assignment structure.
+  - Date          : 2025-09-27 12:10
+  - Author        : IxI-Enki
+  - Version       : 1.1.1
 -->
