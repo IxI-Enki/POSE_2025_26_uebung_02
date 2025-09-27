@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ITdTask } from '@app-models/entities/data/i-td-task';
 import { TdTaskBaseListComponent }from '@app/components/entities/data/td-task-base-list.component';
@@ -14,7 +15,7 @@ import { TdTaskService } from '@app-services/http/entities/data/td-task-service'
 @Component({
   selector:'app-td-task-list',
   standalone: true,
-  imports: [ CommonModule, FormsModule, TranslateModule ],
+  imports: [ CommonModule, FormsModule, TranslateModule, RouterModule ],
   templateUrl: './td-task-list.component.html',
   styleUrl: './td-task-list.component.css'
 })
