@@ -1,0 +1,330 @@
+name: Markdown Umlaut Korrektur
+
+on:
+  push:
+    branches: [main, develop]
+    paths: ['**.md']
+  pull_request:
+    branches: [main]
+    paths: ['**.md']
+
+jobs:
+  check-and-fix-umlauts:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Fehlerhafte Sonderzeichen prüfen und korrigieren
+        id: fix-encodings
+        run: |
+          # Erstelle ein robustes Python-Script für Erkennung und Korrektur
+          cat > fix_markdown_encoding.py << 'EOF'
+          import os
+          import re
+          import sys
+          from pathlib import Path
+          
+          class MarkdownEncodingFixer:
+              def __init__(self):
+                  # Erweiterte Mapping-Tabelle für häufige Encoding-Probleme
+                  self.replacements = {
+                      # UTF-8 als Latin-1 interpretiert (häufigste Fälle)
+                      'Ã¤': 'ä', 'Ã¶': 'ö', 'Ã¼': 'ü',
+                      'Ã„': 'Ä', 'Ã–': 'Ö', 'Ãœ': 'Ü',
+                      'ÃŸ': 'ß',
+                      
+                      # Französische/internationale Zeichen
+                      'Ã©': 'é', 'Ã¨': 'è', 'Ãª': 'ê', 'Ã«': 'ë',
+                      'Ã¡': 'á', 'Ã ': 'à', 'Ã¢': 'â', 'Ã£': 'ã',
+                      'Ã³': 'ó', 'Ã²': 'ò', 'Ã´': 'ô', 'Ãµ': 'õ',
+                      'Ã­': 'í', 'Ã¬': 'ì', 'Ã®': 'î', 'Ã¯': 'ï',
+                      'Ãº': 'ú', 'Ã¹': 'ù', 'Ã»': 'û',
+                      'Ã§': 'ç', 'Ã±': 'ñ',
+                      
+                      # Windows-1252 Sonderzeichen
+                      '├®': 'î', '├¡': '¡', '├¿': '¿',
+                      '├ñ': 'ä', '├╝': 'ü', '├£': 'Ü',
+                      '├Â': 'ö', '├ë': 'ï',
+                      
+                      # Typografische Zeichen
+                      'â€œ': '"', 'â€': '"',  # Anführungszeichen
+                      'â€˜': ''', 'â€™': ''',  # Apostrophe
+                      'â€"': '–', 'â€"': '—',  # Gedankenstriche
+                      'â€¦': '…',               # Ellipse
+                      
+                      # Alternative Mojibake-Pattern
+                      'Ã¯Â¿Â½': '�',  # Replacement character
+                  }
+              
+              def find_md_files(self):
+                  """Findet alle Markdown-Dateien im Repository"""
+                  md_files = []
+                  for path in Path('.').rglob('*.md'):
+                      # Skip .git und andere versteckte Verzeichnisse
+                      if not any(part.startswith('.') for part in path.parts):
+                          md_files.append(path)
+                  return md_files
+              
+              def analyze_file(self, file_path):
+                  """Analysiert eine Datei auf Encoding-Probleme"""
+                  try:
+                      with open(file_path, 'r', encoding='utf-8', errors='replace') as f:
+                          content = f.read()
+                      
+                      issues = []
+                      for bad_seq, good_char in self.replacements.items():
+                          count = content.count(bad_seq)
+                          if count > 0:
+                              issues.append((bad_seq, good_char, count))
+                      
+                      return content, issues
+                      
+                  except Exception as e:
+                      print(f"❌ Fehler beim Lesen von {file_path}: {e}")
+                      return None, []
+              
+              def fix_file(self, file_path, content):
+                  """Korrigiert Encoding-Probleme in einer Datei"""
+                  original_content = content
+                  
+                  for bad_seq, good_char in self.replacements.items():
+                      content = content.replace(bad_seq, good_char)
+                  
+                  if content != original_content:
+                      try:
+                          with open(file_path, 'w', encoding='utf-8') as f:
+                              f.write(content)
+                          return True
+                      except Exception as e:
+                          print(f"❌ Fehler beim Schreiben von {file_path}: {e}")
+                          return False
+                  return False
+              
+              def run(self):
+                  """Hauptfunktion: Analysiert und korrigiert alle MD-Dateien"""
+                  md_files = self.find_md_files()
+                  
+                  if not md_files:
+                      print("ℹ️ Keine Markdown-Dateien gefunden.")
+                      return False, 0, 0
+                  
+                  print(f"📄 Analysiere {len(md_files)} Markdown-Dateien...")
+                  
+                  total_issues = 0
+                  fixed_files = 0
+                  
+                  for file_path in md_files:
+                      content, issues = self.analyze_file(file_path)
+                      
+                      if content is None:
+                          continue
+                          
+                      if issues:
+                          print(f"\n📝 {file_path}:")
+                          for bad_seq, good_char, count in issues:
+                              print(f"   '{bad_seq}' → '{good_char}' ({count}x)")
+                              total_issues += count
+                          
+                          if self.fix_file(file_path, content):
+                              print(f"   ✅ Datei korrigiert")
+                              fixed_files += 1
+                          else:
+                              print(f"   ❌ Korrektur fehlgeschlagen")
+                      else:
+                          print(f"✅ {file_path}: Keine Probleme gefunden")
+                  
+                  return total_issues > 0, total_issues, fixed_files
+          
+          # Script ausführen
+          if __name__ == "__main__":
+              fixer = MarkdownEncodingFixer()
+              had_issues, total_issues, fixed_files = fixer.run()
+              
+              print(f"\n{'='*50}")
+              print(f"📊 ZUSAMMENFASSUNG:")
+              print(f"   Probleme gefunden: {total_issues}")
+              print(f"   Dateien korrigiert: {fixed_files}")
+              
+              if had_issues:
+                  print("❌ Encoding-Probleme wurden gefunden und korrigiert.")
+                  sys.exit(1)  # Signalisiert, dass Korrekturen vorgenommen wurden
+              else:
+                  print("✅ Keine Encoding-Probleme gefunden.")
+                  sys.exit(0)
+          EOF
+          
+          # Python Script ausführen
+          echo "🔍 Starte Encoding-Analyse und -Korrektur..."
+          if python3 fix_markdown_encoding.py; then
+            echo "result=no_issues" >> $GITHUB_OUTPUT
+            echo "changes_made=false" >> $GITHUB_OUTPUT
+          else
+            echo "result=issues_fixed" >> $GITHUB_OUTPUT
+            echo "changes_made=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Git-Änderungen prüfen
+        id: git-check
+        if: steps.fix-encodings.outputs.changes_made == 'true'
+        run: |
+          if [[ -n $(git status --porcelain "*.md") ]]; then
+            echo "git_changes=true" >> $GITHUB_OUTPUT
+            echo "📝 Geänderte Dateien:"
+            git status --porcelain "*.md"
+            echo ""
+            echo "🔍 Änderungsdetails:"
+            git diff --stat "*.md"
+          else
+            echo "git_changes=false" >> $GITHUB_OUTPUT
+            echo "ℹ️ Keine Git-Änderungen erkannt."
+          fi
+
+      - name: Änderungen committen (nur bei Push)
+        if: |
+          steps.git-check.outputs.git_changes == 'true' && 
+          github.event_name == 'push' &&
+          !contains(github.event.head_commit.message, '[skip-umlaut-fix]')
+        run: |
+          # Git-Konfiguration
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Nur .md Dateien hinzufügen
+          git add "*.md"
+          
+          # Commit mit detaillierter Nachricht
+          git commit -m "🔧 Auto-fix: Korrigiere fehlerhafte Sonderzeichen in Markdown-Dateien
+
+          - Ersetze UTF-8/Latin-1 Mojibake (Ã¤→ä, Ã¶→ö, etc.)
+          - Korrigiere typografische Zeichen (â€œ→\", â€"→–, etc.)
+          - Behebe Windows-1252 Encoding-Probleme
+          
+          Workflow: ${{ github.workflow }}
+          Commit: ${{ github.sha }}
+          
+          [skip-umlaut-fix]" || {
+            echo "❌ Commit fehlgeschlagen - möglicherweise keine Änderungen"
+            exit 1
+          }
+          
+          # Push mit Retry-Logik
+          for i in {1..3}; do
+            if git push; then
+              echo "✅ Änderungen erfolgreich gepusht (Versuch $i)"
+              break
+            else
+              echo "⚠️ Push fehlgeschlagen (Versuch $i/3), warte 5 Sekunden..."
+              sleep 5
+              git pull --rebase origin ${{ github.ref_name }} || true
+            fi
+          done
+
+      - name: PR-Kommentar bei gefundenen Problemen
+        if: |
+          steps.fix-encodings.outputs.changes_made == 'true' && 
+          github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const comment = `## 🔧 Automatische Sonderzeichen-Korrektur
+
+            **Status:** ❌ Fehlerhafte Sonderzeichen gefunden und korrigiert
+
+            ### Häufige Probleme behoben:
+            - \`Ã¤\` → \`ä\`, \`Ã¶\` → \`ö\`, \`Ã¼\` → \`ü\`
+            - \`â€œ\` → \`"\`, \`â€"\` → \`–\` (typografische Zeichen)
+            - Windows-1252 und UTF-8/Latin-1 Mojibake
+
+            ### 💡 Wie vermeidest du das in Zukunft?
+            - Stelle sicher, dass dein Editor UTF-8 verwendet
+            - Vermeide Copy-Paste aus Word/E-Mails
+            - Nutze einen modernen Markdown-Editor
+
+            ### 🚀 Nächste Schritte:
+            Nach dem Merge wird eine korrigierte Version automatisch committed.
+
+            ---
+            <sub>🤖 Automatisch generiert durch [\`${{ github.workflow }}\`](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})</sub>`;
+
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+
+      - name: Workflow-Zusammenfassung
+        if: always()
+        run: |
+          # GitHub Step Summary erstellen
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          ## 📊 Markdown Encoding Check Ergebnis
+          
+          **Ereignis:** `${{ github.event_name }}`  
+          **Branch:** `${{ github.ref_name }}`  
+          **Workflow Run:** [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+          
+          EOF
+          
+          if [[ "${{ steps.fix-encodings.outputs.result }}" == "no_issues" ]]; then
+            cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          ### ✅ Ergebnis: Keine Probleme gefunden
+          
+          Alle Markdown-Dateien verwenden korrekte UTF-8 Kodierung.
+          EOF
+          
+          elif [[ "${{ steps.fix-encodings.outputs.result }}" == "issues_fixed" ]]; then
+            cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          ### 🔧 Ergebnis: Probleme gefunden und korrigiert
+          
+          Fehlerhafte Sonderzeichen wurden automatisch durch korrekte Umlaute ersetzt.
+          EOF
+          
+            if [[ "${{ github.event_name }}" == "push" ]]; then
+              cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          
+          **Aktion:** Änderungen wurden automatisch committed und gepusht.
+          EOF
+            else
+              cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          
+          **Aktion:** PR-Kommentar wurde erstellt mit Details zu den gefundenen Problemen.
+          EOF
+            fi
+          fi
+          
+          cat >> $GITHUB_STEP_SUMMARY << 'EOF'
+          
+          ---
+          
+          ### 🛠️ Unterstützte Korrekturen:
+          - **UTF-8/Latin-1 Mojibake:** `Ã¤` → `ä`, `Ã¶` → `ö`, etc.
+          - **Typografische Zeichen:** `â€œ` → `"`, `â€"` → `–`, etc.  
+          - **Windows-1252 Probleme:** `├®` → `î`, etc.
+          - **Internationale Zeichen:** Französisch, Spanisch, etc.
+          EOF
+
+      # Fehlschlag-Handler für besseres Debugging
+      - name: Debug-Informationen bei Fehlern
+        if: failure()
+        run: |
+          echo "🐛 DEBUG INFORMATIONEN:"
+          echo "Git Status:"
+          git status
+          echo ""
+          echo "Letzte Commits:"
+          git log --oneline -5
+          echo ""
+          echo "Branch Info:"
+          git branch -v
+          echo ""
+          echo "Workspace Inhalt:"
+          ls -la
+          echo ""
+          echo "Python Version:"
+          python3 --version
