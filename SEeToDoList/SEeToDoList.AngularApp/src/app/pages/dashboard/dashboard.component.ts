@@ -31,7 +31,7 @@ export class DashboardComponent {
 
   public authCards: DashboardCard[] = [
     { title: 'DASHBOARD.CARDS.TDLIST_TITLE', text: 'DASHBOARD.CARDS.TDLIST_TEXT', type: '/entities/tdlists', bg: 'bg-success text-white', icon: 'bi-list-task' },
-    { title: 'DASHBOARD.CARDS.TDTASK_TITLE', text: 'DASHBOARD.CARDS.TDTASK_TEXT', type: '/entities/tdtasks', bg: 'bg-info text-white', icon: 'bi-check2-square' },
+    { title: 'DASHBOARD.CARDS.TDTASK_TITLE', text: 'DASHBOARD.CARDS.TDTASK_TEXT', type: '/entities/tdtask-cards', bg: 'bg-info text-white', icon: 'bi-check2-square' },
   ];
 
   constructor(

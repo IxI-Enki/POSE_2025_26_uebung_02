@@ -11,7 +11,7 @@ import { TdListBaseListComponent }from '@app/components/entities/data/td-list-ba
 import { TdListEditComponent }from '@app/components/entities/data/td-list-edit.component';
 import { TdListService } from '@app-services/http/entities/data/td-list-service';
 import { TdTaskService } from '@app-services/http/entities/data/td-task-service';
-import { DragDropModule, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 //@CustomImportBegin
 //@CustomImportEnd
 @Component({
@@ -69,20 +69,72 @@ export class TdListListComponent extends TdListBaseListComponent {
     return sorted;
   }
 //@CustomCodeBegin
+  public getDropId(list: ITdList): string {
+    return `list-${list.id}`;
+  }
+  public getConnectedDropIds(current: ITdList): string[] {
+    return Object.keys(this.expanded)
+      .filter(k => this.expanded[+k])
+      .map(k => `list-${k}`)
+      .filter(id => id !== this.getDropId(current));
+  }
+
   public dropList(event: CdkDragDrop<ITdList[]>) {
     moveItemInArray(this.dataItems, event.previousIndex, event.currentIndex);
   }
   public dropTask(list: ITdList, event: CdkDragDrop<ITdTask[]>) {
-    const id = list.id as number;
-    const arr = this.tasksByListId[id] || [];
-    moveItemInArray(arr, event.previousIndex, event.currentIndex);
-    this.tasksByListId[id] = [...arr];
+    const targetId = list.id as number;
+    const targetArray = (event.container.data ?? []) as ITdTask[];
+
+    if (event.previousContainer === event.container) {
+      moveItemInArray(targetArray, event.previousIndex, event.currentIndex);
+      this.tasksByListId[targetId] = [...targetArray];
+    } else {
+      const sourceArray = (event.previousContainer.data ?? []) as ITdTask[];
+      // ensure both arrays are tracked
+      const sourceId = Number(String(event.previousContainer.id).replace('list-','')) || 0;
+      this.tasksByListId[sourceId] = sourceArray;
+      this.tasksByListId[targetId] = targetArray;
+
+      transferArrayItem(sourceArray, targetArray, event.previousIndex, event.currentIndex);
+      const movedTask = targetArray[event.currentIndex];
+      // persist list change
+      if (movedTask) {
+        const previousListId = movedTask.tdListId as any;
+        movedTask.tdListId = targetId as any;
+        this.taskService.update(movedTask).subscribe({
+          next: updated => {
+            // keep arrays in sync
+            const tgt = this.tasksByListId[targetId] || [];
+            const idx = tgt.findIndex(t => t.id === updated.id);
+            if (idx >= 0) tgt[idx] = updated;
+            this.tasksByListId[targetId] = [...tgt];
+          },
+          error: _ => {
+            // revert on error
+            const tgt = this.tasksByListId[targetId] || [];
+            const src = this.tasksByListId[sourceId] || [];
+            const revertIndex = tgt.findIndex(t => t === movedTask);
+            if (revertIndex >= 0) {
+              transferArrayItem(tgt, src, revertIndex, sourceArray.length);
+              this.tasksByListId[targetId] = [...tgt];
+              this.tasksByListId[sourceId] = [...src];
+            }
+            movedTask.tdListId = previousListId;
+          }
+        });
+      }
+    }
   }
 
   public toggleTasks(list: ITdList) {
     const id = list.id as number;
     this.expanded[id] = !this.expanded[id];
-    if (this.expanded[id] && !this.tasksByListId[id] && !this.loadingTasks[id]) {
+    if (this.expanded[id]) {
+      // ensure array exists for DnD target
+      this.tasksByListId[id] = this.tasksByListId[id] || [];
+    }
+    if (this.expanded[id] && this.tasksByListId[id].length === 0 && !this.loadingTasks[id]) {
       this.loadingTasks[id] = true;
       // Load all tasks and filter client-side to avoid backend predicate quirks
       this.taskService.getAll()
