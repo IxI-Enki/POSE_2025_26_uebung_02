@@ -2,43 +2,109 @@
 
 ```mermaid
 flowchart LR
-  A[Client] -->|"GET TdLists count"| B[WebAPI]
-  B -->|"COUNT TdLists"| D[DB]
-  D -->|"rows: 2"| B
-  B -->|"200 OK count"| A
+  %% Nodes
+  client[[Client]]:::client
+  db[(DB)]:::db
+  validator[[Validator]]:::svc
 
-  A -->|"POST create list: Name, Description, CreatedOn"| B
-  B -->|"validate: required + unique(Name)"| C[Validator]
-  C -->|"check unique in DB"| D
-  D -->|"unique"| C
-  C -->|"valid"| B
-  B -->|"INSERT TdList"| D
-  D -->|"id: 3"| B
-  B -->|"201 Created list"| A
+  %% GET TdLists/count
+  g1([GET /TdLists/count]):::get
+  r200a[[200 OK<br/>count: 2]]:::ok
 
-  A -->|"POST duplicate list: Name=Inbox"| B
-  B -->|"validate unique(Name)"| C
-  C -->|"duplicate"| B
-  B -->|"400 BadRequest duplicate"| A
+  %% POST /TdLists create
+  p1([POST /TdLists]):::post
+  p1payload>payload<br/>{ name: Personal,<br/> description: Personal list,<br/> createdOn: ISO-8601 }]:::payload
+  r201a[[201 Created<br/>id: 3]]:::ok
 
-  A -->|"POST create task: Title, TdListId, ..."| B
-  B -->|"validate: Title required, FK exists"| C
-  C -->|"FK ok + Title ok"| B
-  B -->|"INSERT TdTask"| D
-  D -->|"id: 3"| B
-  B -->|"201 Created task"| A
+  %% POST /TdLists duplicate
+  p2([POST /TdLists]):::post
+  p2payload>payload<br/>{ name: Inbox,<br/> description: Dup test,<br/> createdOn: ISO-8601 }]:::payload
+  r400a[[400 BadRequest<br/>duplicate name]]:::bad
 
-  A -->|"PATCH task complete"| B
-  B -->|"validate: CompletedOn needed when IsCompleted"| C
-  C -->|"valid"| B
-  B -->|"UPDATE TdTask set completed"| D
-  D -->|"ok"| B
-  B -->|"200 OK task"| A
+  %% GET /TdLists
+  g2([GET /TdLists]):::get
+  r200b[[200 OK<br/>3 lists]]:::ok
 
-  A -->|"DELETE task"| B
-  B -->|"DELETE TdTask by id"| D
-  D -->|"ok"| B
-  B -->|"204 NoContent"| A
+  %% POST /TdTasks valid
+  t1([POST /TdTasks]):::post
+  t1payload>payload<br/>{ title: Plan trip,<br/> tdListId: 3,<br/> priority: 2,<br/> dueDate: ISO-8601 }]:::payload
+  r201b[[201 Created<br/>task id: 3]]:::ok
+
+  %% POST /TdTasks failures
+  t2([POST /TdTasks]):::post
+  t2payload>payload<br/>{ title: (empty),<br/> tdListId: 3 }]:::payload
+  r400b[[400 BadRequest<br/>title invalid]]:::bad
+
+  t3([POST /TdTasks]):::post
+  t3payload>payload<br/>{ title: Finish taxes,<br/> isCompleted: true,<br/> completedOn: (missing) }]:::payload
+  r400c[[400 BadRequest<br/>completedOn required]]:::bad
+
+  t4([POST /TdTasks]):::post
+  t4payload>payload<br/>{ title: Orphan task,<br/> tdListId: 999999 }]:::payload
+  r400d[[400 BadRequest<br/>list not found]]:::bad
+
+  %% PUT /TdTasks/{id}
+  u1([PUT /TdTasks/3]):::put
+  u1payload>payload<br/>{ title: Plan summer trip,<br/> priority: 1 }]:::payload
+  r200c[[200 OK]]:::ok
+
+  %% PATCH /TdTasks/{id}
+  pa1([PATCH /TdTasks/3]):::patch
+  pa1payload>payload<br/>[ { op: replace, path: /isCompleted, value: true },<br/> { op: replace, path: /completedOn, value: ISO-8601 } ]:::payload
+  r200d[[200 OK]]:::ok
+
+  %% DELETE /TdTasks/{id}
+  d1([DELETE /TdTasks/3]):::del
+  r204a[[204 NoContent]]:::ok
+
+  %% GET TdTasks/count
+  g3([GET /TdTasks/count]):::get
+  r200e[[200 OK<br/>count: 2]]:::ok
+
+  %% Flows
+  client --> g1 --> db --> r200a --> client
+  client --> p1 --> validator --> db --> r201a --> client
+  p1 -.-> p1payload
+
+  client --> p2 --> validator --> r400a --> client
+  p2 -.-> p2payload
+
+  client --> g2 --> db --> r200b --> client
+
+  client --> t1 --> validator --> db --> r201b --> client
+  t1 -.-> t1payload
+
+  client --> t2 --> validator --> r400b --> client
+  t2 -.-> t2payload
+
+  client --> t3 --> validator --> r400c --> client
+  t3 -.-> t3payload
+
+  client --> t4 --> validator --> r400d --> client
+  t4 -.-> t4payload
+
+  client --> u1 --> db --> r200c --> client
+  u1 -.-> u1payload
+
+  client --> pa1 --> db --> r200d --> client
+  pa1 -.-> pa1payload
+
+  client --> d1 --> db --> r204a --> client
+
+  client --> g3 --> db --> r200e --> client
+
+  %% Styles
+  classDef client fill:#0b1020,stroke:#60a5fa,color:#e5e7eb,stroke-width:1.5px
+  classDef svc fill:#0b0f19,stroke:#a78bfa,color:#e5e7eb,stroke-width:1.5px
+  classDef db fill:#111827,stroke:#a78bfa,color:#e5e7eb,stroke-width:1.5px
+  classDef get fill:#1f2937,stroke:#60a5fa,color:#e5e7eb,stroke-width:1.5px
+  classDef post fill:#111827,stroke:#34d399,color:#e5e7eb,stroke-width:1.5px
+  classDef put fill:#0b1020,stroke:#22d3ee,color:#e5e7eb,stroke-width:1.5px
+  classDef patch fill:#0f172a,stroke:#f59e0b,color:#e5e7eb,stroke-width:1.5px
+  classDef del fill:#111827,stroke:#f87171,color:#e5e7eb,stroke-width:1.5px
+  classDef ok fill:#0b1324,stroke:#34d399,color:#e5e7eb,stroke-width:1.2px
+  classDef bad fill:#1a1020,stroke:#f87171,color:#fde68a,stroke-width:1.2px
+  classDef payload fill:#1f2937,stroke:#9ca3af,color:#e5e7eb,stroke-dasharray: 3 3
 ```
 
 #### Environment
