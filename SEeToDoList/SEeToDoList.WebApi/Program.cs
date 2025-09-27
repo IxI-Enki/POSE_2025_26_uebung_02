@@ -47,11 +47,10 @@ namespace SEeToDoList.WebApi
 
             // Configure the HTTP request pipeline.
 
-            app.UseHttpsRedirection();
-
-            // Added GeGe
+            // Ensure CORS headers are present even on redirects
             app.UseCors();
-            // Added GeGe
+
+            app.UseHttpsRedirection();
 
             app.UseAuthorization();
 
