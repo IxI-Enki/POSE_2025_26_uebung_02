@@ -34,5 +34,7 @@ coverage/
 
 # Local tools
 .cursor/
+!.cursor/rules/
+!.cursor/rules/*.mdc
 .specify/
 .dist/
