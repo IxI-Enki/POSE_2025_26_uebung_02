@@ -13,6 +13,7 @@ import { TdTaskService } from '@app-services/http/entities/data/td-task-service'
 //@CustomImportEnd
 @Component({
   selector:'app-td-task-list',
+  standalone: true,
   imports: [ CommonModule, FormsModule, TranslateModule ],
   templateUrl: './td-task-list.component.html',
   styleUrl: './td-task-list.component.css'

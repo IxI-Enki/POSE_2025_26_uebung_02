@@ -40,8 +40,10 @@
     "CARDS": {
       "DASHBOARD_TITLE": "Dashboard",
       "DASHBOARD_TEXT": "Übersicht",
-      "TDLIST_TITLE": "Taskliste",
-      "TDLIST_TEXT": "Listen aller Aufgaben."
+      "TDLIST_TITLE": "To-Do Listen",
+      "TDLIST_TEXT": "Listen aller Aufgaben verwalten.",
+      "TDTASK_TITLE": "Aufgaben",
+      "TDTASK_TEXT": "Einträge der Aufgaben verwalten."
     }
   },
   "MESSAGE_BOX": {

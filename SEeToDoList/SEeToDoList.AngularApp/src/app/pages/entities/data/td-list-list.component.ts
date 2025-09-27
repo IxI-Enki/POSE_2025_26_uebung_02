@@ -13,6 +13,7 @@ import { TdListService } from '@app-services/http/entities/data/td-list-service'
 //@CustomImportEnd
 @Component({
   selector:'app-td-list-list',
+  standalone: true,
   imports: [ CommonModule, FormsModule, TranslateModule ],
   templateUrl: './td-list-list.component.html',
   styleUrl: './td-list-list.component.css'
