@@ -1,2 +1,21 @@
 ﻿<!--@CustomCode-->
-<p>Edit item works!</p>
+<div class="modal-header">
+  <h5 class="modal-title">{{ 'DASHBOARD.CARDS.TDLIST_TITLE' | translate }} - {{ editMode ? ('COMMON.EDIT' | translate) : ('COMMON.ADD' | translate) }}</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()"></button>
+</div>
+<div class="modal-body">
+  <form (ngSubmit)="submitForm()">
+    <div class="mb-3">
+      <label class="form-label">{{ 'TDLIST.NAME' | translate }}</label>
+      <input type="text" class="form-control" [(ngModel)]="dataItem.name" name="name" required />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">{{ 'TDLIST.DESCRIPTION' | translate }}</label>
+      <textarea class="form-control" [(ngModel)]="dataItem.description" name="description" rows="3"></textarea>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="cancelForm()">{{ 'COMMON.CANCEL' | translate }}</button>
+  <button type="button" class="btn btn-primary" (click)="submitForm()" [disabled]="saveData">{{ 'COMMON.SAVE' | translate }}</button>
+</div>
