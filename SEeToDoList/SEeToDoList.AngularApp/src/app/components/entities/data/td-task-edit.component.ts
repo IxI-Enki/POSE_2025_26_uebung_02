@@ -8,6 +8,7 @@ import { TdTaskBaseEditComponent }from '@app/components/entities/data/td-task-ba
 //@CustomImportEnd
 @Component({
   selector:'app-td-task-edit',
+  standalone: true,
   imports: [ CommonModule, FormsModule, TranslateModule],
   templateUrl: './td-task-edit.component.html',
   styleUrl: './td-task-edit.component.css'
