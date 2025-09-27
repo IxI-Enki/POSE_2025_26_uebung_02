@@ -73,9 +73,10 @@ export class TdListListComponent extends TdListBaseListComponent {
     this.expanded[id] = !this.expanded[id];
     if (this.expanded[id] && !this.tasksByListId[id] && !this.loadingTasks[id]) {
       this.loadingTasks[id] = true;
-      this.taskService.query({ filter: 'tdListId.Equals(@0)', values: [String(id)] })
+      // Load all tasks and filter client-side to avoid backend predicate quirks
+      this.taskService.getAll()
         .subscribe(items => {
-          this.tasksByListId[id] = items;
+          this.tasksByListId[id] = items.filter(t => (t.tdListId as any) === id);
           this.loadingTasks[id] = false;
         });
     }

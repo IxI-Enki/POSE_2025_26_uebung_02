@@ -3,11 +3,11 @@ title: 'POSE Exercise 02: SEeToDoList'
 exercise_name: 'SEeToDoList'
 nr: 2
 author: 'IxI-Enki'
-created: '2025-09-27 11:41'
 course: 'Programming and Software Engineering'
+created: '2025-09-27 11:41'
+due_date: '2025-09-30 00:00'
 school_year: '2025/26'
 moodle_link: 'https://edufs.edu.htl-leonding.ac.at/moodle/mod/assign/view.php?id=214265'
-due_date: '2025-09-30 00:00'
 ---
 
 This repository contains the Moodle assignment for SEeToDoList (assignment code: 2526_78ABIF_78ACIF_POS_GEHR)
