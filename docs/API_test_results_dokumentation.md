@@ -5,11 +5,17 @@ flowchart LR
   classDef dark fill:#0b0f17,stroke:#334155,color:#e5e7eb;
   classDef node fill:#111827,stroke:#4b5563,color:#e5e7eb;
   classDef edge stroke:#64748b,color:#94a3b8;
-  classDef get stroke:#10b981,color:#10b981;
-  classDef post stroke:#3b82f6,color:#3b82f6;
-  classDef put stroke:#f59e0b,color:#f59e0b;
-  classDef patch stroke:#a855f7,color:#a855f7;
-  classDef del stroke:#ef4444,color:#ef4444;
+  %% request method node styles
+  classDef getNode fill:#064e3b,stroke:#10b981,color:#d1fae5;
+  classDef postNode fill:#0c4a6e,stroke:#38bdf8,color:#e0f2fe;
+  classDef putNode fill:#3f2a0d,stroke:#f59e0b,color:#fffbeb;
+  classDef patchNode fill:#3b0764,stroke:#a855f7,color:#f3e8ff;
+  classDef delNode fill:#450a0a,stroke:#ef4444,color:#fee2e2;
+  %% response node styles
+  classDef ok200 fill:#052e16,stroke:#22c55e,color:#bbf7d0;
+  classDef created201 fill:#042f2e,stroke:#14b8a6,color:#99f6e4;
+  classDef err4xx fill:#3f1d1d,stroke:#f87171,color:#fee2e2;
+  classDef no204 fill:#1f2937,stroke:#9ca3af,color:#e5e7eb;
 
   subgraph CLIENT[Client]
     direction LR
@@ -24,14 +30,32 @@ flowchart LR
     DB[("Database<br>(SQLite/EF Core)")]:::node
   end
 
-  CReq -- GET --> Ctrl:::get
-  CReq -- POST --> Ctrl:::post
-  CReq -- PUT --> Ctrl:::put
-  CReq -- PATCH --> Ctrl:::patch
-  CReq -- DELETE --> Ctrl:::del
+  %% request flows (one per method)
+  G[GET]:::getNode
+  P[POST]:::postNode
+  U[PUT]:::putNode
+  H[PATCH]:::patchNode
+  D[DELETE]:::delNode
+
+  CReq --> G --> Ctrl
+  CReq --> P --> Ctrl
+  CReq --> U --> Ctrl
+  CReq --> H --> Ctrl
+  CReq --> D --> Ctrl
+
   Ctrl -- Calls --> Logic:::edge
   Logic -- Persist/Query --> DB:::edge
-  Ctrl -- 200/201/4xx/204 --> CRes:::edge
+
+  %% response flows (one per status type)
+  R200[200 OK]:::ok200
+  R201[201 Created]:::created201
+  R4xx[4xx Error]:::err4xx
+  R204[204 No Content]:::no204
+
+  Ctrl --> R200 --> CRes
+  Ctrl --> R201 --> CRes
+  Ctrl --> R4xx --> CRes
+  Ctrl --> R204 --> CRes
 
   class CLIENT,API dark;
 ```
