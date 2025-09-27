@@ -1,31 +1,18 @@
 ﻿<div class="container py-5">
-  <div class="mb-4 text-center">
-    <h1 class="display-5 fw-bold mb-2">{{ 'DASHBOARD.WELCOME' | translate }}</h1>
-    <p class="text-secondary">SEeToDoList</p>
-  </div>
+  <!-- Animated hero with subtle background -->
+  <section class="hero bg-animated rounded-3 p-4 p-lg-5 mb-4 position-relative overflow-hidden">
+    <div class="position-absolute accent-orb orb-1"></div>
+    <div class="position-absolute accent-orb orb-2"></div>
+    <div class="position-absolute accent-orb orb-3"></div>
+    <div class="text-center position-relative">
+      <h1 class="display-5 fw-bold mb-2">{{ 'DASHBOARD.WELCOME' | translate }}</h1>
+      <p class="text-secondary mb-0">SEeToDoList</p>
+    </div>
+  </section>
 
   <div class="container-fluid">
 
-    <!-- Öffentlicher Bereich -->
-    <ng-container *ngIf="publicCards.length > 0">
-      <h2 class="h4 text-uppercase text-secondary mb-3">{{ 'DASHBOARD.PUBLIC_ACCESS' | translate }}</h2>
-      <div class="row g-3">
-        <div class="col-12 col-sm-6 col-lg-3" *ngFor="let card of publicCards">
-          <a [routerLink]="[card.type]" class="text-decoration-none">
-            <div class="card dash-card h-100">
-              <div class="card-body text-center py-4">
-                <i class="{{card.icon}} fs-1 mb-3 d-block"></i>
-                <h5 class="card-title mb-1">{{ card.title | translate }}</h5>
-                <small class="text-secondary">{{ card.text | translate }}</small>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div>
-      <hr class="my-4" />
-    </ng-container>
-
-    <!-- Geschützter Bereich -->
+    <!-- Protected Area (primary content) -->
     <ng-container *ngIf="authCards.length > 0">
       <div class="d-flex align-items-center mb-3">
         <h2 class="h4 text-uppercase text-secondary mb-0">{{ 'DASHBOARD.PROTECTED_AREA' | translate }}</h2>
@@ -43,10 +30,10 @@
         </div>
       </div>
 
-      <div class="row g-3">
-        <div class="col-12 col-sm-6 col-lg-3" *ngFor="let card of authCards">
+      <div class="row g-4">
+        <div class="col-12 col-sm-6 col-lg-4" *ngFor="let card of authCards">
           <a [routerLink]="[card.type]" class="text-decoration-none">
-            <div class="card dash-card h-100">
+            <div class="card dash-card h-100 tilt">
               <div class="card-body text-center py-4">
                 <i class="{{card.icon}} fs-1 mb-3 d-block"></i>
                 <h5 class="card-title mb-1">{{ card.title | translate }}</h5>
@@ -58,5 +45,12 @@
       </div>
     </ng-container>
 
+    <!-- Tiny dashboard chip at bottom -->
+    <div class="mt-5 d-flex justify-content-center">
+      <a class="btn btn-outline-secondary btn-sm px-3 rounded-pill shadow-sm" [routerLink]="['/dashboard']">
+        <i class="bi bi-speedometer2 me-1"></i>
+        {{ 'DASHBOARD.CARDS.DASHBOARD_TITLE' | translate }}
+      </a>
+    </div>
   </div>
 </div>
