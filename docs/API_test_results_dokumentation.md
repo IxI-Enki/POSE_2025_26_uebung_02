@@ -2,20 +2,17 @@
 
 ```mermaid
 flowchart LR
-  A[Client] -->|GET /api/TdLists/count| B[WebAPI]
-  B --> C[DB]
-  B -->|200 OK| A
-  A -->|POST /api/TdLists| B
-  B --> C
-  B -->|201 Created| A
-  A -->|POST /api/TdLists (duplicate)| B
-  B -->|400 BadRequest| A
-  A -->|POST /api/TdTasks| B
-  B -->|201 Created| A
-  A -->|PATCH /api/TdTasks/{id}| B
-  B -->|200 OK| A
-  A -->|DELETE /api/TdTasks/{id}| B
-  B -->|204 NoContent| A
+  A[Client] -->|"GET TdLists count"| B[WebAPI]
+  A -->|"POST create list"| B
+  B -->|"201"| A
+  A -->|"POST duplicate list"| B
+  B -->|"400"| A
+  A -->|"POST create task"| B
+  B -->|"201"| A
+  A -->|"PATCH complete task"| B
+  B -->|"200"| A
+  A -->|"DELETE task"| B
+  B -->|"204"| A
 ```
 
 #### Environment
