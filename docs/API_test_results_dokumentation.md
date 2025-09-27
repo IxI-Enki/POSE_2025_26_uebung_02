@@ -16,47 +16,58 @@ flowchart LR
   classDef created201 fill:#042f2e,stroke:#14b8a6,color:#99f6e4;
   classDef err4xx fill:#3f1d1d,stroke:#f87171,color:#fee2e2;
   classDef no204 fill:#1f2937,stroke:#9ca3af,color:#e5e7eb;
+  classDef CResBody fill:#052e16,stroke:#22c55e,color:#bbf7d0;
 
+  classDef CReqb fill:#0c4a6e55,stroke:##0c4a6e,color:#e0f2fe;
+  classDef CResb fill:#052e1655,stroke:#22c55e,color:#bbf7d0;
+  req:::CReqb
+  res:::CResb
+
+  classDef shaddow fill:#052e1677,stroke:#22c55e,color:#bbf7d0;
+  CResBody[Response Body]:::shaddow
+
+  classDef CReqBody  fill:#0c4a6e77,stroke:#38bdf8,color:#e0f2fe;
+  CReqBody[Request Body]:::CReqBody
 
   subgraph API[ ]
-  subgraph CLIENT[Client]
-    direction LR
-    CReq["Compose Request<br>(Invoke-WebRequest)"]:::node
-    CRes["Render Response<br>(HTTP Status / JSON)"]:::node
-    %% pretty JSON bodies as nested subgraphs under client nodes
-  end 
     direction LR
     api_ctrl["WebAPI<br>(api/TdLists, api/TdTasks)"]:::node
     Logic["Logic Layer<br>(Validation, EF Core)"]:::node
     DB[("Database<br>(SQLite/EF Core)")]:::node
-  
+   
     subgraph req[Request]
       direction LR
-      class req getNode
+      class req CReqb
       G[GET]:::getNode
       P[POST]:::postNode
       U[PUT]:::putNode
       H[PATCH]:::patchNode
       D[DELETE]:::delNode
 
-      subgraph CReqBody[*Example* <br>Request Body JSON]
+      subgraph CReqBody[*Example POST* <br>Request Body JSON]
         direction TB
         %% To ensure left alignment (LINKSBÜNDIG) in Mermaid, use <div style="text-align:left">...</div> inside the label.
-        CReqJson["<div style='text-align:left'>{<br>&nbsp;&nbsp;&quot;title&quot;: &quot;Plan trip&quot;,<br>&nbsp;&nbsp;&quot;description&quot;: &quot;Book flights&quot;,<br>&nbsp;&nbsp;&quot;dueDate&quot;: &quot;&lt;now&gt;&quot;,<br>&nbsp;&nbsp;&quot;isCompleted&quot;: false,<br>&nbsp;&nbsp;&quot;priority&quot;: 2,<br>&nbsp;&nbsp;&quot;tdListId&quot;: 1<br>}</div>"]:::node
+        CReqJson["<div style='text-align:left'>{<br>&nbsp;&nbsp;&quot;title&quot;: &quot;Plan trip&quot;,<br>&nbsp;&nbsp;&quot;description&quot;: &quot;Book flights&quot;,<br>&nbsp;&nbsp;&quot;dueDate&quot;: &quot;2025-09-27T17:39:48&quot;,<br>&nbsp;&nbsp;&quot;isCompleted&quot;: false,<br>&nbsp;&nbsp;&quot;priority&quot;: 2,<br>&nbsp;&nbsp;&quot;tdListId&quot;: 1<br>}</div>"]:::node
       end
     end
 
+    subgraph CLIENT[Client]
+      direction LR
+      CReq["Compose Request<br>(Invoke-WebRequest)"]:::node
+      CRes["Render Response<br>(HTTP Status / JSON)"]:::node
+      %% pretty JSON bodies as nested subgraphs under client nodes
+    end 
 
 
     subgraph res[Response]
       direction LR
-      class res ok200
+      class res CResb
       R200[200 OK]:::ok200
       R201[201 Created]:::created201
       R4xx[4xx Error]:::err4xx
       R204[204 No Content]:::no204
 
-      subgraph CResBody[*Example* <br> Response Body JSON]
+      subgraph CResBody[*Example OK* <br> Response Body JSON]
         direction TB
         CResJson["<div style='text-align:left'>{<br>&nbsp;&nbsp;&quot;title&quot;: &quot;Plan trip&quot;,<br>&nbsp;&nbsp;&quot;description&quot;: &quot;Book flights&quot;,<br>&nbsp;&nbsp;&quot;dueDate&quot;: &quot;2025-09-27T17:39:48.0157651Z&quot;,<br>&nbsp;&nbsp;&quot;completedOn&quot;: null,<br>&nbsp;&nbsp;&quot;isCompleted&quot;: false,<br>&nbsp;&nbsp;&quot;priority&quot;: 2,<br>&nbsp;&nbsp;&quot;tdListId&quot;: 1,<br>&nbsp;&nbsp;&quot;tdList&quot;: null,<br>&nbsp;&nbsp;&quot;id&quot;: 4<br>}</div>"]:::node
       end
@@ -67,18 +78,18 @@ end
   %% request flows (one per method)
   G[GET]:::getNode
   P[POST]:::postNode
-  U[PUT]:::putNode
   H[PATCH]:::patchNode
+  U[PUT]:::putNode
   D[DELETE]:::delNode
 
-  CReq --> CReqBody --> G --> api_ctrl
   CReq --> CReqBody --> P --> api_ctrl
-  CReq --> CReqBody --> U --> api_ctrl
-  CReq --> CReqBody --> H --> api_ctrl
-  CReq --> CReqBody --> D --> api_ctrl
+  CReq --> G --> api_ctrl
+  CReq --> U --> api_ctrl
+  CReq --> H --> api_ctrl
+  CReq --> D --> api_ctrl
 
-  api_ctrl <-. Delegates .-> Logic:::edge
-  Logic -. Persist/Query ..-> DB:::edge
+  api_ctrl <-. Delegate .-> Logic:::edge
+  Logic <-. Persist/Query .-> DB:::edge
 
   %% response flows (one per status type)
   R200[200 OK]:::ok200
@@ -87,9 +98,9 @@ end
   R204[204 No Content]:::no204
 
   api_ctrl --> R200 --> CResBody --> CRes
-  api_ctrl --> R201 --> CResBody --> CRes
-  api_ctrl --> R4xx --> CResBody --> CRes
-  api_ctrl --> R204 --> CResBody --> CRes
+  api_ctrl --> R201 ----> CRes
+  api_ctrl --> R4xx ----> CRes
+  api_ctrl --> R204 ----> CRes
 
   class CLIENT,API dark;
 ```
