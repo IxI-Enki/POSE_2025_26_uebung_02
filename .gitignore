@@ -12,7 +12,7 @@ bin/
 obj/
 *.user
 *.suo
-*.vs/
+.vs/
 
 # IDEs/Editors
 .vscode/
@@ -38,3 +38,16 @@ coverage/
 !.cursor/rules/*.mdc
 .specify/
 .dist/
+
+# Added by automation: ignore build artifacts and Template* dirs
+Debug/
+debug/
+Release/
+TestResults/
+artifacts/
+packages/
+dist/
+.angular/
+SEeToDoList/TemplateTools.Logic/
+SEeToDoList/TemplateTools.ConApp/
+SEeToDoList/TemplateMcp.ConApp/
