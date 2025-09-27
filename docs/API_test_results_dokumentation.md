@@ -5,24 +5,33 @@ flowchart LR
   classDef dark fill:#0b0f17,stroke:#334155,color:#e5e7eb;
   classDef node fill:#111827,stroke:#4b5563,color:#e5e7eb;
   classDef edge stroke:#64748b,color:#94a3b8;
+  classDef get stroke:#10b981,color:#10b981;
+  classDef post stroke:#3b82f6,color:#3b82f6;
+  classDef put stroke:#f59e0b,color:#f59e0b;
+  classDef patch stroke:#a855f7,color:#a855f7;
+  classDef del stroke:#ef4444,color:#ef4444;
 
   subgraph CLIENT[Client]
     direction LR
-    CReq["Compose Request\n(Invoke-WebRequest)"]:::node
-    CRes["Render Response\n(HTTP Status / JSON)"]:::node
+    CReq["Compose Request<br>(Invoke-WebRequest)"]:::node
+    CRes["Render Response<br>(HTTP Status / JSON)"]:::node
   end
 
-  subgraph API[Web API]
+  subgraph API[Backend]
     direction LR
-    Ctrl["Controllers\n(api/TdLists, api/TdTasks)"]:::node
-    Logic["Logic Layer\n(Validation, EF Core)"]:::node
-    DB[("Database\n(SQLite/EF Core)")]:::node
+    Ctrl["WebAPI<br>(api/TdLists, api/TdTasks)"]:::node
+    Logic["Logic Layer<br>(Validation, EF Core)"]:::node
+    DB[("Database<br>(SQLite/EF Core)")]:::node
   end
 
-  CReq -- HTTP --> Ctrl:::edge
+  CReq -- GET --> Ctrl:::get
+  CReq -- POST --> Ctrl:::post
+  CReq -- PUT --> Ctrl:::put
+  CReq -- PATCH --> Ctrl:::patch
+  CReq -- DELETE --> Ctrl:::del
   Ctrl -- Calls --> Logic:::edge
   Logic -- Persist/Query --> DB:::edge
-  Ctrl -- HTTP --> CRes:::edge
+  Ctrl -- 200/201/4xx/204 --> CRes:::edge
 
   class CLIENT,API dark;
 ```

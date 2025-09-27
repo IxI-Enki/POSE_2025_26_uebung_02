@@ -47,6 +47,10 @@ The exact exercise content (as fetched from Moodle) is available here:
 - Course specific directories:
   e.g. `<course_specific_directory>/` (for example `sql/` for DDL, DML, and example queries).
 
+### API Test Documentation
+
+- See detailed REST tests, results, and diagram: [docs/API_test_results_dokumentation.md](docs/API_test_results_dokumentation.md)
+
 ---
 
 <!--
