@@ -85,7 +85,12 @@
                 </div>
               </div>
 
-              <table class="table table-sm table-striped mb-0" cdkDropList (cdkDropListDropped)="dropTask(item, $event)">
+              <table class="table table-sm table-striped mb-0"
+                     cdkDropList
+                     [id]="getDropId(item)"
+                     [cdkDropListData]="tasksByListId[item.id]"
+                     [cdkDropListConnectedTo]="getConnectedDropIds(item)"
+                     (cdkDropListDropped)="dropTask(item, $event)">
                 <thead>
                   <tr>
                     <th>{{ 'TDTASK.TITLE' | translate }}</th>
