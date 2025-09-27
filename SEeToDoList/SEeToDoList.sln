@@ -1,0 +1,98 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{BC2ECD62-F271-49A7-AB42-D0110628A32E}") = "SEeToDoList.Logic", "SEeToDoList.Logic\SEeToDoList.Logic.csproj", "{B9071805-DAFE-442C-9F34-E4DD315E1D8F}"
+EndProject
+Project("{394670A8-F6DF-477B-B802-D5AF3CF51A01}") = "SEeToDoList.ConApp", "SEeToDoList.ConApp\SEeToDoList.ConApp.csproj", "{9CD3496A-889C-4991-9274-8AEF097556E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}")="SolutionItems","SolutionItems","{A288F100-2A15-4E8F-B686-8ACD1EB87D9D}"
+	ProjectSection(SolutionItems)=preProject
+		CodeGeneration.csv=CodeGeneration.csv
+		.github\copilot-instructions.md=.github\copilot-instructions.md
+		entities_template.md=entities_template.md
+		forms_template.md=forms_template.md
+		import_template.md=import_template.md
+		README.md=README.md
+		readme_template.md=readme_template.md
+		sampleItemEdit.html=sampleItemEdit.html
+		sampleItemEdit.ts=sampleItemEdit.ts
+		sampleItemEntityList.html=sampleItemEntityList.html
+		sampleItemEntityList.ts=sampleItemEntityList.ts
+		sampleItemViewList.html=sampleItemViewList.html
+		sampleItemViewList.ts=sampleItemViewList.ts
+		task.md=task.md
+	EndProjectSection
+EndProject
+Project("{3885466F-1281-4906-9E6D-F3E971ADA561}") = "SEeToDoList.WebApi", "SEeToDoList.WebApi\SEeToDoList.WebApi.csproj", "{BF70F327-1664-4BD7-AF5B-DAB306FFC3A6}"
+EndProject
+Project("{5D12E284-EB43-44CA-ABC0-FEA7A4EA3072}") = "SEeToDoList.Common", "SEeToDoList.Common\SEeToDoList.Common.csproj", "{D622D224-3200-4BFE-9757-9126B15EA861}"
+EndProject
+Project("{77F954F6-F11C-414E-855B-FD3732C4D219}") = "TemplateTools.ConApp", "TemplateTools.ConApp\TemplateTools.ConApp.csproj", "{49C667A7-CBFD-4B5F-9EB4-942CF5EB0E05}"
+EndProject
+Project("{9FEDA2E1-1395-4F29-8E3E-6B514551629E}") = "TemplateTools.Logic", "TemplateTools.Logic\TemplateTools.Logic.csproj", "{D665E4F6-446C-45C5-A4E5-B0E7CDBEE7DB}"
+EndProject
+Project("{C8B3B397-DB55-4BCE-9E5F-31D2B3A31C8D}") = "SEeToDoList.CodeGenApp", "SEeToDoList.CodeGenApp\SEeToDoList.CodeGenApp.csproj", "{0D967C58-C9F9-4EBB-A958-F01E42C32A54}"
+EndProject
+Project("{F13A4619-8BE8-4A96-B048-D52D4BDB2E1F}") = "SEeToDoList.MVVMApp", "SEeToDoList.MVVMApp\SEeToDoList.MVVMApp.csproj", "{787A7471-C70C-4EFB-976F-4FEFAA98E597}"
+EndProject
+Project("{AACEEEEF-B30E-4782-9708-5462BB7FFA80}") = "SEeToDoList.AngularApp", "SEeToDoList.AngularApp\SEeToDoList.AngularApp.esproj", "{809F8060-D733-E671-6EBC-62B3811C798E}"
+EndProject
+Project("{76ECE75B-DF7C-48DB-9E8D-639748B6587E}") = "TemplateMcp.ConApp", "TemplateMcp.ConApp\TemplateMcp.ConApp.csproj", "{16EF332B-59D1-F620-2647-834F22EE8BE9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9071805-DAFE-442C-9F34-E4DD315E1D8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9071805-DAFE-442C-9F34-E4DD315E1D8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9071805-DAFE-442C-9F34-E4DD315E1D8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9071805-DAFE-442C-9F34-E4DD315E1D8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CD3496A-889C-4991-9274-8AEF097556E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CD3496A-889C-4991-9274-8AEF097556E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CD3496A-889C-4991-9274-8AEF097556E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CD3496A-889C-4991-9274-8AEF097556E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF70F327-1664-4BD7-AF5B-DAB306FFC3A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF70F327-1664-4BD7-AF5B-DAB306FFC3A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF70F327-1664-4BD7-AF5B-DAB306FFC3A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF70F327-1664-4BD7-AF5B-DAB306FFC3A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D622D224-3200-4BFE-9757-9126B15EA861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D622D224-3200-4BFE-9757-9126B15EA861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D622D224-3200-4BFE-9757-9126B15EA861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D622D224-3200-4BFE-9757-9126B15EA861}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49C667A7-CBFD-4B5F-9EB4-942CF5EB0E05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49C667A7-CBFD-4B5F-9EB4-942CF5EB0E05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49C667A7-CBFD-4B5F-9EB4-942CF5EB0E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49C667A7-CBFD-4B5F-9EB4-942CF5EB0E05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D665E4F6-446C-45C5-A4E5-B0E7CDBEE7DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D665E4F6-446C-45C5-A4E5-B0E7CDBEE7DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D665E4F6-446C-45C5-A4E5-B0E7CDBEE7DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D665E4F6-446C-45C5-A4E5-B0E7CDBEE7DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D967C58-C9F9-4EBB-A958-F01E42C32A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D967C58-C9F9-4EBB-A958-F01E42C32A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D967C58-C9F9-4EBB-A958-F01E42C32A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D967C58-C9F9-4EBB-A958-F01E42C32A54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{787A7471-C70C-4EFB-976F-4FEFAA98E597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{787A7471-C70C-4EFB-976F-4FEFAA98E597}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{787A7471-C70C-4EFB-976F-4FEFAA98E597}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{787A7471-C70C-4EFB-976F-4FEFAA98E597}.Release|Any CPU.Build.0 = Release|Any CPU
+		{809F8060-D733-E671-6EBC-62B3811C798E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{809F8060-D733-E671-6EBC-62B3811C798E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{809F8060-D733-E671-6EBC-62B3811C798E}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{809F8060-D733-E671-6EBC-62B3811C798E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{809F8060-D733-E671-6EBC-62B3811C798E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{809F8060-D733-E671-6EBC-62B3811C798E}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{16EF332B-59D1-F620-2647-834F22EE8BE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16EF332B-59D1-F620-2647-834F22EE8BE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16EF332B-59D1-F620-2647-834F22EE8BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16EF332B-59D1-F620-2647-834F22EE8BE9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FBE26416-294F-4F3C-87B6-62FEA8DE4C3B}
+	EndGlobalSection
+EndGlobal
