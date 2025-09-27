@@ -19,7 +19,11 @@ Setze die Anforderungen in folgenden Schritten um:
 2. **Entity-Modell prüfen**:
    - Lass uns gemeinsam das Entity-Modell überprüfen. Erst wenn das Entity-Modell abgenommen ist, kannst du mit den nächsten Schritten fortfahren. 
 3. **CodeGenerierung ausführen**:
-    - Führe die CodeGenerierung mit folgendem Befehl aus: dotnet run --project TemplateTools.ConApp -- AppArg=4,9,x,x
+   - Führe die CodeGenerierung mit folgendem Befehl aus:
+
+```bash
+ dotnet run --project TemplateTools.ConApp -- AppArg=4,9,x,x
+```
 4. **CSV-Import erstellen**:
    - Erstelle eine Klasse, die den Import von CSV-Dateien ermöglicht. Halte dich bei der Umsetzung des Imports an die Vorgaben im Dokument `import_template.md`.
 5. **Benutzeroberfläche erstellen**:
