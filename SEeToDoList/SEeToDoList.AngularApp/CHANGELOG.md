@@ -1,10 +1,12 @@
 ﻿This file explains how Visual Studio created the project.
 
 The following tools were used to generate this project:
+
 - Angular CLI (ng)
 
 The following steps were used to generate this project:
-- Create Angular project with ng: `ng new SEeToDoList.AngularApp --defaults --skip-install --skip-git --no-standalone `.
+
+- Create Angular project with ng: `ng new SEeToDoList.AngularApp --defaults --skip-install --skip-git --no-standalone`.
 - Update angular.json with port.
 - Create project file (`SEeToDoList.AngularApp.esproj`).
 - Create `launch.json` to enable debugging.
