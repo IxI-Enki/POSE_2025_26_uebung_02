@@ -1,41 +1,21 @@
 ### API Test Results
 
 ```mermaid
-sequenceDiagram
-  participant Client
-  participant WebAPI as SEeToDoList.WebApi
-  participant DB as SQLite/EF Core
-
-  Client->>WebAPI: GET /api/TdLists/count
-  WebAPI->>DB: Count(TdLists)
-  WebAPI-->>Client: 200 OK (count)
-
-  Client->>WebAPI: POST /api/TdLists { Name, Description, CreatedOn }
-  WebAPI->>DB: Insert TdList
-  DB-->>WebAPI: New Id
-  WebAPI-->>Client: 201 Created (list)
-
-  Client->>WebAPI: POST /api/TdLists { Name=Inbox, ... }
-  WebAPI->>DB: Validate unique Name
-  DB-->>WebAPI: Conflict
-  WebAPI-->>Client: 400 BadRequest (duplicate)
-
-  Client->>WebAPI: POST /api/TdTasks { Title, TdListId, ... }
-  WebAPI->>DB: Insert TdTask
-  DB-->>WebAPI: New Id
-  WebAPI-->>Client: 201 Created (task)
-
-  Client->>WebAPI: POST /api/TdTasks { Title="", ... }
-  WebAPI->>WebAPI: Validate title
-  WebAPI-->>Client: 400 BadRequest (invalid title)
-
-  Client->>WebAPI: PATCH /api/TdTasks/{id} [isCompleted, completedOn]
-  WebAPI->>DB: Update TdTask
-  WebAPI-->>Client: 200 OK (task)
-
-  Client->>WebAPI: DELETE /api/TdTasks/{id}
-  WebAPI->>DB: Delete TdTask
-  WebAPI-->>Client: 204 NoContent
+flowchart LR
+  A[Client] -->|GET /api/TdLists/count| B[WebAPI]
+  B --> C[DB]
+  B -->|200 OK| A
+  A -->|POST /api/TdLists| B
+  B --> C
+  B -->|201 Created| A
+  A -->|POST /api/TdLists (duplicate)| B
+  B -->|400 BadRequest| A
+  A -->|POST /api/TdTasks| B
+  B -->|201 Created| A
+  A -->|PATCH /api/TdTasks/{id}| B
+  B -->|200 OK| A
+  A -->|DELETE /api/TdTasks/{id}| B
+  B -->|204 NoContent| A
 ```
 
 #### Environment
@@ -67,15 +47,26 @@ sequenceDiagram
 - Body:
 
 ```json
-{"name":"Personal","description":"Personal list","createdOn":"2025-09-27T16:55:32.1725576Z"}
+{
+  "name": "Personal",
+  "description": "Personal list",
+  "createdOn": "2025-09-27T16:55:32.1725576Z"
+}
 ```
 
 - Expected: 201 Created
 - Actual: 201 Created
-- Response Body (truncated to essentials):
+- Response Body:
 
 ```json
-{"name":"Personal","description":"Personal list","createdOn":"2025-09-27T16:55:32.1725576Z","completedOn":null,"tasks":[],"id":3}
+{
+  "name": "Personal",
+  "description": "Personal list",
+  "createdOn": "2025-09-27T16:55:32.1725576Z",
+  "completedOn": null,
+  "tasks": [],
+  "id": 3
+}
 ```
 
 ---
@@ -87,7 +78,11 @@ sequenceDiagram
 - Body:
 
 ```json
-{"name":"Inbox","description":"Dup test","createdOn":"2025-09-27T16:55:32.1725576Z"}
+{
+  "name": "Inbox",
+  "description": "Dup test",
+  "createdOn": "2025-09-27T16:55:32.1725576Z"
+}
 ```
 
 - Expected: 400 BadRequest (duplicate name)
@@ -106,10 +101,35 @@ sequenceDiagram
 - URL: `/TdLists`
 - Expected: 200 OK with existing lists
 - Actual: 200 OK
-- Response Body (truncated):
+- Response Body:
 
 ```json
-[{"name":"Inbox","description":"Default list","createdOn":"2025-09-27T16:50:24.0004871Z","completedOn":null,"tasks":[],"id":1},{"name":"Work","description":"Work related","createdOn":"2025-09-27T16:50:24.0004871Z","completedOn":null,"tasks":[],"id":2},{"name":"Personal","description":"Personal list"...
+[
+  {
+    "name": "Inbox",
+    "description": "Default list",
+    "createdOn": "2025-09-27T16:50:24.0004871Z",
+    "completedOn": null,
+    "tasks": [],
+    "id": 1
+  },
+  {
+    "name": "Work",
+    "description": "Work related",
+    "createdOn": "2025-09-27T16:50:24.0004871Z",
+    "completedOn": null,
+    "tasks": [],
+    "id": 2
+  },
+  {
+    "name": "Personal",
+    "description": "Personal list",
+    "createdOn": "2025-09-27T16:55:32.1725576Z",
+    "completedOn": null,
+    "tasks": [],
+    "id": 3
+  }
+]
 ```
 
 ---
@@ -121,7 +141,14 @@ sequenceDiagram
 - Body:
 
 ```json
-{"title":"Plan trip","description":"Book flights","dueDate":"2025-09-27T16:55:32.1725576Z","isCompleted":false,"priority":2,"tdListId":3}
+{
+  "title": "Plan trip",
+  "description": "Book flights",
+  "dueDate": "2025-09-27T16:55:32.1725576Z",
+  "isCompleted": false,
+  "priority": 2,
+  "tdListId": 3
+}
 ```
 
 - Expected: 201 Created
@@ -129,7 +156,17 @@ sequenceDiagram
 - Response Body:
 
 ```json
-{"title":"Plan trip","description":"Book flights","dueDate":"2025-09-27T16:55:32.1725576Z","completedOn":null,"isCompleted":false,"priority":2,"tdListId":3,"tdList":null,"id":3}
+{
+  "title": "Plan trip",
+  "description": "Book flights",
+  "dueDate": "2025-09-27T16:55:32.1725576Z",
+  "completedOn": null,
+  "isCompleted": false,
+  "priority": 2,
+  "tdListId": 3,
+  "tdList": null,
+  "id": 3
+}
 ```
 
 ---
@@ -141,7 +178,13 @@ sequenceDiagram
 - Body:
 
 ```json
-{"title":"","description":"missing title","tdListId":3,"isCompleted":false,"priority":3}
+{
+  "title": "",
+  "description": "missing title",
+  "tdListId": 3,
+  "isCompleted": false,
+  "priority": 3
+}
 ```
 
 - Expected: 400 BadRequest
@@ -161,7 +204,13 @@ sequenceDiagram
 - Body:
 
 ```json
-{"title":"Finish taxes","description":"no completedOn","isCompleted":true,"priority":1,"tdListId":3}
+{
+  "title": "Finish taxes",
+  "description": "no completedOn",
+  "isCompleted": true,
+  "priority": 1,
+  "tdListId": 3
+}
 ```
 
 - Expected: 400 BadRequest
@@ -181,7 +230,13 @@ sequenceDiagram
 - Body:
 
 ```json
-{"title":"Orphan task","description":"invalid list","isCompleted":false,"priority":3,"tdListId":999999}
+{
+  "title": "Orphan task",
+  "description": "invalid list",
+  "isCompleted": false,
+  "priority": 3,
+  "tdListId": 999999
+}
 ```
 
 - Expected: 400 BadRequest
@@ -201,7 +256,14 @@ sequenceDiagram
 - Body:
 
 ```json
-{"title":"Plan summer trip","description":"Book and plan","dueDate":"2025-09-27T16:55:32.1725576Z","isCompleted":false,"priority":1,"tdListId":3}
+{
+  "title": "Plan summer trip",
+  "description": "Book and plan",
+  "dueDate": "2025-09-27T16:55:32.1725576Z",
+  "isCompleted": false,
+  "priority": 1,
+  "tdListId": 3
+}
 ```
 
 - Expected: 200 OK
@@ -209,7 +271,17 @@ sequenceDiagram
 - Response Body:
 
 ```json
-{"title":"Plan summer trip","description":"Book and plan","dueDate":"2025-09-27T16:55:32.1725576Z","completedOn":null,"isCompleted":false,"priority":1,"tdListId":3,"tdList":null,"id":3}
+{
+  "title": "Plan summer trip",
+  "description": "Book and plan",
+  "dueDate": "2025-09-27T16:55:32.1725576Z",
+  "completedOn": null,
+  "isCompleted": false,
+  "priority": 1,
+  "tdListId": 3,
+  "tdList": null,
+  "id": 3
+}
 ```
 
 ---
@@ -221,7 +293,18 @@ sequenceDiagram
 - Body:
 
 ```json
-[{"op":"replace","path":"/isCompleted","value":true},{"op":"replace","path":"/completedOn","value":"2025-09-27T16:55:32.1725576Z"}]
+[
+  {
+    "op": "replace",
+    "path": "/isCompleted",
+    "value": true
+  },
+  {
+    "op": "replace",
+    "path": "/completedOn",
+    "value": "2025-09-27T16:55:32.1725576Z"
+  }
+]
 ```
 
 - Expected: 200 OK
@@ -229,7 +312,17 @@ sequenceDiagram
 - Response Body:
 
 ```json
-{"title":"Plan summer trip","description":"Book and plan","dueDate":"2025-09-27T16:55:32.1725576Z","completedOn":"2025-09-27T16:55:32.1725576Z","isCompleted":true,"priority":1,"tdListId":3,"tdList":null,"id":3}
+{
+  "title": "Plan summer trip",
+  "description": "Book and plan",
+  "dueDate": "2025-09-27T16:55:32.1725576Z",
+  "completedOn": "2025-09-27T16:55:32.1725576Z",
+  "isCompleted": true,
+  "priority": 1,
+  "tdListId": 3,
+  "tdList": null,
+  "id": 3
+}
 ```
 
 ---
