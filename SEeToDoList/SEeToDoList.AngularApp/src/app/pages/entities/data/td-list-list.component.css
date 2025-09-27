@@ -1,4 +1,7 @@
 ﻿/*@CustomCode*/
+.list-row { position: relative; }
+.row-dropzone { position:absolute; inset:0; z-index:0; }
+.row-dropzone.cdk-drop-list-dragging, .list-row.cdk-drop-list-receiving { outline: 1px dashed var(--bs-border-color); }
 .details-row {
   background: transparent;
 }

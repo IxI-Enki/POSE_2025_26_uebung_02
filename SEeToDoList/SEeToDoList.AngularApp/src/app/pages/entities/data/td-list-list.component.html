@@ -13,13 +13,17 @@
   </div>
 
   <!-- Sorting options -->
-  <div class="d-flex gap-2 mb-3 flex-wrap">
-    <label class="me-2 text-secondary small">Sortierung:</label>
-    <div class="btn-group" role="group" aria-label="Sort options">
-      <button class="btn btn-outline-secondary" [class.active]="sortOption==='nameAsc'" (click)="sortOption='nameAsc'; dataItems = sortData(dataItems)">A→Z</button>
-      <button class="btn btn-outline-secondary" [class.active]="sortOption==='nameDesc'" (click)="sortOption='nameDesc'; dataItems = sortData(dataItems)">Z→A</button>
-      <button class="btn btn-outline-secondary" [class.active]="sortOption==='createdDesc'" (click)="sortOption='createdDesc'; dataItems = sortData(dataItems)"><i class="bi bi-clock-history me-1"></i>Neueste</button>
-      <button class="btn btn-outline-secondary" [class.active]="sortOption==='createdAsc'" (click)="sortOption='createdAsc'; dataItems = sortData(dataItems)"><i class="bi bi-clock me-1"></i>Älteste</button>
+  <div class="d-flex gap-3 mb-3 flex-wrap align-items-center">
+    <label class="me-1 text-secondary small">{{ 'SORT.LABEL' | translate }}</label>
+    <div class="btn-group" role="group" aria-label="Sort by list">
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='nameAsc'" (click)="setSort('nameAsc')">{{ 'SORT.NAME_AZ' | translate }}</button>
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='nameDesc'" (click)="setSort('nameDesc')">{{ 'SORT.NAME_ZA' | translate }}</button>
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='createdLatest'" (click)="setSort('createdLatest')">{{ 'SORT.CREATED_NEWEST' | translate }}</button>
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='createdEarliest'" (click)="setSort('createdEarliest')">{{ 'SORT.CREATED_OLDEST' | translate }}</button>
+    </div>
+    <div class="btn-group" role="group" aria-label="Sort by tasks">
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='tasksMost'" (click)="setSort('tasksMost')">{{ 'SORT.TASKS_MOST' | translate }}</button>
+      <button class="btn btn-outline-secondary" [class.active]="sortOption==='tasksFewest'" (click)="setSort('tasksFewest')">{{ 'SORT.TASKS_FEWEST' | translate }}</button>
     </div>
   </div>
 
@@ -35,13 +39,11 @@
     </thead>
     <tbody>
       <ng-container *ngFor="let item of dataItems; let i = index" cdkDrag>
-        <tr cdkDropList
-            [id]="getRowDropId(item)"
-            [cdkDropListConnectedTo]="getAllDropIds()"
-            [cdkDropListData]="tasksByListId[item.id]"
-            (cdkDropListDropped)="dropOnListRow(item, $event)">
-          <td>
-            <button class="btn btn-sm btn-outline-secondary" (click)="toggleTasks(item)" [attr.aria-expanded]="expanded[item.id]">
+        <tr class="list-row">
+          <td class="position-relative">
+            <!-- full-row invisible dropzone to allow dropping on collapsed row without altering table layout -->
+            <div class="row-dropzone" cdkDropList [id]="getRowDropId(item)" [cdkDropListConnectedTo]="getAllDropIds()" [cdkDropListData]="tasksByListId[item.id]" (cdkDropListDropped)="dropOnListRow(item, $event)"></div>
+            <button class="btn btn-sm btn-outline-secondary position-relative" (click)="toggleTasks(item)" [attr.aria-expanded]="expanded[item.id]">
               <i class="bi" [ngClass]="expanded[item.id] ? 'bi-caret-down-square' : 'bi-caret-right-square'"></i>
             </button>
           </td>

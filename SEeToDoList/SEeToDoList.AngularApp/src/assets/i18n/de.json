@@ -58,6 +58,15 @@
     "DUE": "Fällig am",
     "PRIORITY": "Priorität"
   },
+  "SORT": {
+    "LABEL": "Sortierung:",
+    "NAME_AZ": "Name A→Z",
+    "NAME_ZA": "Name Z→A",
+    "CREATED_NEWEST": "Zuletzt erstellt",
+    "CREATED_OLDEST": "Zuerst erstellt",
+    "TASKS_MOST": "Meiste Aufgaben",
+    "TASKS_FEWEST": "Wenigste Aufgaben"
+  },
   "MESSAGE_BOX": {
     "TITLE": "Hinweis",
     "CONFIRM_TITLE": "Bitte bestätigen",

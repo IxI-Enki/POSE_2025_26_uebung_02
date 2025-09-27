@@ -58,6 +58,15 @@
     "DUE": "Due",
     "PRIORITY": "Priority"
   },
+  "SORT": {
+    "LABEL": "Sorting:",
+    "NAME_AZ": "Name A→Z",
+    "NAME_ZA": "Name Z→A",
+    "CREATED_NEWEST": "Newest created",
+    "CREATED_OLDEST": "Oldest created",
+    "TASKS_MOST": "Most tasks",
+    "TASKS_FEWEST": "Fewest tasks"
+  },
   "MESSAGE_BOX": {
     "TITLE": "Notice",
     "CONFIRM_TITLE": "Please confirm",

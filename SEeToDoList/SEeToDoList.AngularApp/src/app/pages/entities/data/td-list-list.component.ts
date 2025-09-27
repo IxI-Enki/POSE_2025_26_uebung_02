@@ -32,7 +32,7 @@ export class TdListListComponent extends TdListBaseListComponent {
   public countsByListId: Record<number, number> = {};
 
   // sorting
-  public sortOption: 'nameAsc' | 'nameDesc' | 'createdDesc' | 'createdAsc' = 'nameAsc';
+  public sortOption: 'nameAsc' | 'nameDesc' | 'createdLatest' | 'createdEarliest' | 'tasksMost' | 'tasksFewest' = 'nameAsc';
 
   constructor(protected override dataAccessService: TdListService, private taskService: TdTaskService)
   {
@@ -62,14 +62,24 @@ export class TdListListComponent extends TdListBaseListComponent {
       case 'nameDesc':
         sorted.sort((a,b) => (b.name||'').localeCompare(a.name||''));
         break;
-      case 'createdDesc':
+      case 'createdLatest':
         sorted.sort((a,b) => new Date(b.createdOn).getTime() - new Date(a.createdOn).getTime());
         break;
-      case 'createdAsc':
+      case 'createdEarliest':
         sorted.sort((a,b) => new Date(a.createdOn).getTime() - new Date(b.createdOn).getTime());
+        break;
+      case 'tasksMost':
+        sorted.sort((a,b) => (this.countsByListId[b.id as number] ?? 0) - (this.countsByListId[a.id as number] ?? 0));
+        break;
+      case 'tasksFewest':
+        sorted.sort((a,b) => (this.countsByListId[a.id as number] ?? 0) - (this.countsByListId[b.id as number] ?? 0));
         break;
     }
     return sorted;
+  }
+  public setSort(opt: typeof this.sortOption) {
+    this.sortOption = opt;
+    this.dataItems = this.sortData(this.dataItems);
   }
 //@CustomCodeBegin
   private loadAllCounts() {
@@ -80,6 +90,7 @@ export class TdListListComponent extends TdListBaseListComponent {
         map[lid] = (map[lid] ?? 0) + 1;
       }
       this.countsByListId = map;
+      this.dataItems = this.sortData(this.dataItems);
     });
   }
   public getCount(list: ITdList): number {
