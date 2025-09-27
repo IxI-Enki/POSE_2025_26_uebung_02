@@ -28,7 +28,8 @@
     "NO": "No",
     "OK": "OK",
     "DELETE_CONFIRM": "Do you want to delete the entry '{{item}}'?",
-    "DELETE_TITLE": "Confirm Delete"
+    "DELETE_TITLE": "Confirm Delete",
+    "ACTIONS": "Actions"
   },
   "DASHBOARD": {
     "TITLE": "Dashboard",
@@ -40,9 +41,21 @@
     "CARDS": {
       "DASHBOARD_TITLE": "Dashboard",
       "DASHBOARD_TEXT": "Overview",
-      "TDLIST_TITLE": "Tasklist",
-      "TDLIST_TEXT": "Lists of all tasks."
+      "TDLIST_TITLE": "To-Do Lists",
+      "TDLIST_TEXT": "Manage lists of tasks.",
+      "TDTASK_TITLE": "Tasks",
+      "TDTASK_TEXT": "Manage task entries."
     }
+  },
+  "TDLIST": {
+    "NAME": "Name",
+    "DESCRIPTION": "Description"
+  },
+  "TDTASK": {
+    "TITLE": "Title",
+    "DESCRIPTION": "Description",
+    "DUE": "Due",
+    "PRIORITY": "Priority"
   },
   "MESSAGE_BOX": {
     "TITLE": "Notice",

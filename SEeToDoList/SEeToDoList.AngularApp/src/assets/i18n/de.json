@@ -28,7 +28,8 @@
     "NO": "Nein",
     "OK": "OK",
     "DELETE_CONFIRM": "Möchten Sie den Eintrag '{{item}}' löschen?",
-    "DELETE_TITLE": "Löschen bestätigen"
+    "DELETE_TITLE": "Löschen bestätigen",
+    "ACTIONS": "Aktionen"
   },
   "DASHBOARD": {
     "TITLE": "Dashboard",
@@ -45,6 +46,16 @@
       "TDTASK_TITLE": "Aufgaben",
       "TDTASK_TEXT": "Einträge der Aufgaben verwalten."
     }
+  },
+  "TDLIST": {
+    "NAME": "Name",
+    "DESCRIPTION": "Beschreibung"
+  },
+  "TDTASK": {
+    "TITLE": "Titel",
+    "DESCRIPTION": "Beschreibung",
+    "DUE": "Fällig am",
+    "PRIORITY": "Priorität"
   },
   "MESSAGE_BOX": {
     "TITLE": "Hinweis",
