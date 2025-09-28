@@ -24,6 +24,18 @@ The exact exercise content (as fetched from Moodle) is available here:
 
 - [Moodle Assignment (exact content)](angabe/moodle_angabe.md)
 
+## 2.1. Finished Assignment
+
+![dashboard](<.img/Screenshot 2025-09-28 111256.png>)
+
+![to-do-lists](<.img/Screenshot 2025-09-28 111335.png>)
+
+![tasks-cards](<.img/Screenshot 2025-09-28 111346.png>)
+
+![tasks-lists](<.img/Screenshot 2025-09-28 111356.png>)
+
+---
+
 ## 3. Submission Guidelines
 
 - Submission is done via a Git repository with a clean commit history.
