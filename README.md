@@ -135,7 +135,6 @@ end
   class CLIENT,API dark;
 ```
 
-
 ---
 
 ## 3. Submission Guidelines
