@@ -1,16 +1,16 @@
 ---
 title: 'POSE Exercise 02: SEeToDoList'
 exercise_name: 'SEeToDoList'
-exercise_number: 2
+nr: 2
 author: 'IxI-Enki'
-created: '2025-09-27 11:41'
 course: 'Programming and Software Engineering'
+created: '2025-09-27 11:41'
+due_date: '2025-09-30 00:00'
 school_year: '2025/26'
 moodle_link: 'https://edufs.edu.htl-leonding.ac.at/moodle/mod/assign/view.php?id=214265'
-due_date: '2025-09-30 00:00'
 ---
 
-This repository contains the Moodle assignment for SEeToDoList (assignment code: 2526_78ABIF_78ACIF_POS_GEHR), standardized for documentation and submission.
+This repository contains the Moodle assignment for SEeToDoList (assignment code: 2526_78ABIF_78ACIF_POS_GEHR)
 
 ## 1. Goals
 
@@ -23,6 +23,18 @@ This repository contains the Moodle assignment for SEeToDoList (assignment code:
 The exact exercise content (as fetched from Moodle) is available here:
 
 - [Moodle Assignment (exact content)](angabe/moodle_angabe.md)
+
+## 2.1. Finished Assignment
+
+![dashboard](<.img/Screenshot 2025-09-28 111256.png>)
+
+![to-do-lists](<.img/Screenshot 2025-09-28 111335.png>)
+
+![tasks-cards](<.img/Screenshot 2025-09-28 111346.png>)
+
+![tasks-lists](<.img/Screenshot 2025-09-28 111356.png>)
+
+---
 
 ## 3. Submission Guidelines
 
@@ -44,14 +56,19 @@ The exact exercise content (as fetched from Moodle) is available here:
 
 - `docs/`: Holds diagrams, explanations, other documentation and external sources like PDFs.
 
-- Course specific directories: e.g. `<course_specific_directory>/` (for example `sql/` for DDL, DML, and example queries).
+- Course specific directories:
+  e.g. `<course_specific_directory>/` (for example `sql/` for DDL, DML, and example queries).
+
+### API Test Documentation
+
+- See detailed REST tests, results, and diagram: [docs/API_test_results_dokumentation.md](docs/API_test_results_dokumentation.md)
 
 ---
 
 <!--
-Last Change
-  - Description   : Cleaned assignment content, consolidated angabe, and updated README
-  - Date          : 2025-09-27 11:50 
-  - Origin        : IxI-Enki/School-Repository-Agent
-  - File Version  : 1.1.0
+Update Log
+  - Description   : Updated README formatting and clarified assignment structure.
+  - Date          : 2025-09-27 12:10
+  - Author        : IxI-Enki
+  - Version       : 1.1.1
 -->

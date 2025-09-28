@@ -1,7 +1,7 @@
 {
   "APP": {
-    "TITLE": "SETemplate",
-    "BRAND": "SETemplate"
+    "TITLE": "SEeToDoList",
+    "BRAND": "SEeToDoList"
   },
   "NAVIGATION": {
     "DASHBOARD": "Dashboard"
@@ -28,11 +28,13 @@
     "NO": "No",
     "OK": "OK",
     "DELETE_CONFIRM": "Do you want to delete the entry '{{item}}'?",
-    "DELETE_TITLE": "Confirm Delete"
+    "DELETE_TITLE": "Confirm Delete",
+    "ACTIONS": "Actions",
+    "NO_DATA": "No data available"
   },
   "DASHBOARD": {
     "TITLE": "Dashboard",
-    "WELCOME": "Welcome to SEeTimeManager!",
+    "WELCOME": "Welcome to SEeToDoList!",
     "PUBLIC_ACCESS": "Public Access",
     "PROTECTED_AREA": "Protected Area",
     "STATISTICS": "Statistics",
@@ -40,9 +42,34 @@
     "CARDS": {
       "DASHBOARD_TITLE": "Dashboard",
       "DASHBOARD_TEXT": "Overview",
-      "TDLIST_TITLE": "Tasklist",
-      "TDLIST_TEXT": "Lists of all tasks."
+      "TDLIST_TITLE": "To-Do Lists",
+      "TDLIST_TEXT": "Manage lists of tasks.",
+      "TDTASK_TITLE": "Tasks",
+      "TDTASK_TEXT": "Manage task entries."
     }
+  },
+  "TDLIST": {
+    "NAME": "Name",
+    "DESCRIPTION": "Description"
+  },
+  "TDTASK": {
+    "TITLE": "Title",
+    "DESCRIPTION": "Description",
+    "DUE": "Due",
+    "PRIORITY": "Priority"
+  },
+  "SORT": {
+    "LABEL": "Sorting:",
+    "NAME_AZ": "Name A→Z",
+    "NAME_ZA": "Name Z→A",
+    "CREATED_NEWEST": "Newest created",
+    "CREATED_OLDEST": "Oldest created",
+    "TASKS_MOST": "Most tasks",
+    "TASKS_FEWEST": "Fewest tasks"
+  },
+  "VIEW": {
+    "LIST": "List",
+    "CARDS": "Cards"
   },
   "MESSAGE_BOX": {
     "TITLE": "Notice",

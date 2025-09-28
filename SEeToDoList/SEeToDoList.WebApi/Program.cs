@@ -30,7 +30,9 @@ namespace SEeToDoList.WebApi
             {
                 options.AddDefaultPolicy(policy =>
                 {
-                    policy.WithOrigins("http://127.0.0.1:54091")
+                    policy.WithOrigins("http://127.0.0.1:54095")
+                          .WithOrigins("http://localhost:54091")
+                          .WithOrigins("http://127.0.0.1:54091")
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                 });

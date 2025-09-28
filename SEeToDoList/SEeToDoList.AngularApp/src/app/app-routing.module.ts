@@ -3,20 +3,26 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { TdListListComponent } from './pages/entities/data/td-list-list.component';
+import { TdTaskListComponent } from './pages/entities/data/td-task-list.component';
+import { TdTaskCardsComponent } from './pages/entities/data/td-task-cards.component';
 
 const routes: Routes = [
-  // Öffentlicher Login-Bereich
-  { path: 'auth/login', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
-  // Geschützter Bereich mit Dashboard und Unterseiten
-  //{ path: 'protected', component: ProtectedListComponent, canActivate: [AuthGuard] },
+  // Auth
+  { path: 'auth/login', component: LoginComponent },
+
+  // Dashboard
+  { path: 'dashboard', component: DashboardComponent },
+
+  // Entities
+  { path: 'entities/tdlists', component: TdListListComponent, canActivate: [AuthGuard] },
+  { path: 'entities/tdtasks', component: TdTaskListComponent, canActivate: [AuthGuard] },
+  { path: 'entities/tdtask-cards', component: TdTaskCardsComponent, canActivate: [AuthGuard] },
 
   // Redirect von leerem Pfad auf Dashboard
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-
-  // Fallback bei ungültiger URL
-  { path: '**', redirectTo: '/dashboard' }
+  { path: '**', redirectTo: 'dashboard' }
 ];
 
 @NgModule({

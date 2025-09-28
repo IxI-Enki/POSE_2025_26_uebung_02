@@ -8,9 +8,11 @@
 
 - Vorlagen enthalten Platzhalter für die zu setzenden Werte.
 
-- Wenn Platzhalter unklar sind → wird der User vor dem Erstellen und Bearbeiten der Dateien aufgefordert, Werte für die Platzhalter zu wählen.
+- Wenn Platzhalter unklar sind → wird der User vor dem Erstellen und Bearbeiten der Dateien aufgefordert,
+  Werte für die Platzhalter zu wählen.
 
-- Vorlagen die sich überschneiden → müssen so kombiniert werden, dass keine Duplikate entstehen und keine Informationen verloren gehen.
+- Vorlagen die sich überschneiden → müssen so kombiniert werden,
+  dass keine Duplikate entstehen und keine Informationen verloren gehen.
 
 =====
 
@@ -84,7 +86,8 @@ due_date: '<YYYY-MM-DD HH:MM>'
 
   - Müssen mit leeren Zeilen getrennt werden.
 
-  - Müssen bei längeren Dokumenten nummeriert werden → `<Nummer>. <Überschrift>` , `<Nummer>.<Nummer>. <Überschrift>` , etc.
+  - Müssen bei längeren Dokumenten nummeriert werden
+    → `<Nummer>. <Überschrift>` , `<Nummer>.<Nummer>. <Überschrift>` , etc.
 
 - **CODEBLÖCKE**:
 

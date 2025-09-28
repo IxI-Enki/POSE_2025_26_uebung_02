@@ -2,13 +2,26 @@
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="/dashboard">SEeToDoList</a>
 
-    <!-- Hamburger Button mit ng-bootstrap -->
-    <button class="navbar-toggler" type="button" (click)="isMenuCollapsed = !isMenuCollapsed" [attr.aria-expanded]="!isMenuCollapsed" aria-controls="navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <!-- Always-visible right tray -->
+    <div class="d-flex align-items-center ms-auto gap-2 order-2 order-lg-3">
+      <a class="btn btn-outline-primary btn-sm" routerLink="/dashboard" title="Dashboard"><i class="bi bi-speedometer2"></i></a>
+      <button class="btn btn-outline-secondary" type="button" (click)="toggleTheme()" [title]="theme === 'dark' ? 'Light mode' : 'Dark mode'">
+        <i class="bi" [ngClass]="theme === 'dark' ? 'bi-moon-stars' : 'bi-sun'"></i>
+      </button>
+      <!-- Quick language buttons -->
+      <div class="btn-group" role="group" aria-label="Language">
+        <button class="btn btn-outline-secondary btn-sm" [class.active]="currentLanguage==='de'" (click)="switchLanguage('de')" title="Deutsch">DE</button>
+        <button class="btn btn-outline-secondary btn-sm" [class.active]="currentLanguage==='en'" (click)="switchLanguage('en')" title="English">EN</button>
+      </div>
 
-    <!-- Collapsible menu mit ng-bootstrap -->
-    <div class="collapse navbar-collapse" [ngClass]="{'show': !isMenuCollapsed}" id="navbarNav">
+      <!-- Hamburger Button with ng-bootstrap -->
+      <button class="navbar-toggler ms-2" type="button" (click)="isMenuCollapsed = !isMenuCollapsed" [attr.aria-expanded]="!isMenuCollapsed" aria-controls="navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
+    <!-- Collapsible menu with ng-bootstrap -->
+    <div class="collapse navbar-collapse order-3 order-lg-2" [ngClass]="{'show': !isMenuCollapsed}" id="navbarNav">
       <!-- Navigation Links -->
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
@@ -17,23 +30,10 @@
             {{ 'NAVIGATION.DASHBOARD' | translate }}
           </a>
         </li>
-
-        <!-- Mobile Sprachauswahl - direkt in der Navigation -->
-        <li class="nav-item d-lg-none">
-          <a class="nav-link" (click)="switchLanguage('de'); isMenuCollapsed = true" [class.active]="currentLanguage === 'de'">
-            🇩🇪 Deutsch
-          </a>
-        </li>
-        <li class="nav-item d-lg-none">
-          <a class="nav-link" (click)="switchLanguage('en'); isMenuCollapsed = true" [class.active]="currentLanguage === 'en'">
-            🇺🇸 English
-          </a>
-        </li>
       </ul>
 
-      <!-- Right-aligned items -->
-      <ul class="navbar-nav ms-auto">
-
+      <!-- Right-aligned items inside collapse (language + user) -->
+      <ul class="navbar-nav ms-auto align-items-center">
         <!-- Sprachauswahl - Desktop Dropdown -->
         <li ngbDropdown class="nav-item dropdown d-none d-lg-block">
           <a class="nav-link dropdown-toggle" role="button" ngbDropdownToggle aria-expanded="false">

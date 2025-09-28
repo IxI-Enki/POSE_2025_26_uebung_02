@@ -13,6 +13,7 @@ export class AppComponent {
   public title = 'SEMusicStoreAngular-Developer';
   public currentLanguage = 'de';
   public isMenuCollapsed = true;
+  public theme: 'light' | 'dark' = 'light';
 
   public get isLoginRequired(): boolean {
     return this.authService.isLoginRequired;
@@ -38,6 +39,29 @@ export class AppComponent {
     this.translateService.onLangChange.subscribe((event) => {
       this.currentLanguage = event.lang;
     });
+
+    // Theme initialisieren (Persistenz + Systempräferenz)
+    const storedTheme = localStorage.getItem('app-theme') as 'light' | 'dark' | null;
+    if (storedTheme) {
+      this.setTheme(storedTheme);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      this.setTheme(prefersDark ? 'dark' : 'light');
+    }
+  }
+
+  private applyThemeAttribute(theme: 'light' | 'dark') {
+    document.documentElement.setAttribute('data-bs-theme', theme);
+  }
+
+  public setTheme(theme: 'light' | 'dark') {
+    this.theme = theme;
+    this.applyThemeAttribute(theme);
+    localStorage.setItem('app-theme', theme);
+  }
+
+  public toggleTheme() {
+    this.setTheme(this.theme === 'light' ? 'dark' : 'light');
   }
 
   public switchLanguage(language: string) {

@@ -1,0 +1,30 @@
+# Title;Description;DueDate;IsCompleted;Priority;ListName;CompletedOn
+Plan sprint;Prepare backlog for sprint;2025-02-01T12:00:00Z;false;1;Work;
+Team meeting;Weekly sync;2025-02-02T08:00:00Z;false;2;Work;
+Buy milk;Organic 2L;2025-02-11T18:00:00Z;false;3;Shopping;
+Buy vegetables;Tomatoes, cucumbers;2025-02-11T18:30:00Z;false;2;Shopping;
+Fix sink;Replace gasket;2025-02-03T17:00:00Z;true;2;Home Projects;2025-02-03T19:30:00Z
+Yoga session;Hatha yoga 45m;2025-02-06T06:30:00Z;false;2;Fitness;
+Read book;Clean Code chapters 1-2;2025-03-05T20:00:00Z;false;2;Learning;
+Pay electricity bill;Online payment;2025-03-25T09:00:00Z;false;1;Finance;
+Doctor appointment;Annual check-up;2025-04-02T09:15:00Z;false;1;Health;
+Pack suitcase;Prepare essentials;2025-03-25T18:00:00Z;false;2;Travel;
+Inbox Task 01;Process email batch 1;2025-01-06T10:00:00Z;false;2;Inbox;
+Inbox Task 02;Process email batch 2;2025-01-07T11:00:00Z;false;2;Inbox;
+Personal Task 01;Call friend;2025-01-08T19:00:00Z;false;3;Personal;
+Personal Task 02;Family event planning;2025-01-09T20:00:00Z;false;2;Personal;
+Workout;Leg day;2025-02-06T17:00:00Z;false;2;Fitness;
+Budget review;March expenses;2025-03-21T10:00:00Z;false;1;Finance;
+Trip research;Destinations and flights;2025-03-16T16:00:00Z;false;2;Travel;
+Health insurance;Compare plans;2025-04-05T10:45:00Z;false;2;Health;
+Learn Angular;Build a demo app;2025-03-10T13:00:00Z;false;2;Learning;
+List 11 Task;Auto generated;2025-04-05T12:00:00Z;false;3;List 11;
+List 12 Task;Auto generated;2025-04-10T12:00:00Z;false;3;List 12;
+List 13 Task;Auto generated;2025-04-15T12:00:00Z;false;3;List 13;
+List 14 Task;Auto generated;2025-04-20T12:00:00Z;false;3;List 14;
+List 15 Task;Auto generated;2025-04-25T12:00:00Z;false;3;List 15;
+List 16 Task;Auto generated;2025-05-01T12:00:00Z;false;3;List 16;
+List 17 Task;Auto generated;2025-05-05T12:00:00Z;false;3;List 17;
+List 18 Task;Auto generated;2025-05-10T12:00:00Z;false;3;List 18;
+List 19 Task;Auto generated;2025-05-15T12:00:00Z;false;3;List 19;
+List 20 Task;Auto generated;2025-05-20T12:00:00Z;false;3;List 20;
